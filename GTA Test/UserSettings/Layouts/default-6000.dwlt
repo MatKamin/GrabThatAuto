@@ -69,8 +69,8 @@ MonoBehaviour:
     y: 0
     width: 319.33325
     height: 1293.3334
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 76}
+  m_MaxSize: {x: 4001, y: 4026}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -301,9 +301,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 1080
+    y: 1025.3333
     width: 2239.6667
-    height: 266.00006
+    height: 266.00012
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -346,7 +346,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 90b80000
     m_LastClickedID: 47248
-    m_ExpandedIDs: 0000000090b8000092b8000094b8000000ca9a3b
+    m_ExpandedIDs: 0000000090b8000092b8000094b80000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -454,8 +454,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 2240.6667
-    y: 78.66667
+    x: 2241.6667
+    y: 24
     width: 318.33325
     height: 1267.3334
   m_SerializedDataModeController:
@@ -504,7 +504,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 78.66667
+    y: 24
     width: 550.3333
     height: 975.3333
   m_SerializedDataModeController:
@@ -521,8 +521,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: ceb30000
-      m_LastClickedID: 46030
+      m_SelectedIDs: 
+      m_LastClickedID: 0
       m_ExpandedIDs: e8faffffc2b30000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -569,8 +569,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: -20782
-    y: -21297.334
+    x: 552.3333
+    y: 24
     width: 1687.3335
     height: 975.3333
   m_SerializedDataModeController:
@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: 0.5429318, y: -15.260378, z: -0.053684965}
     speed: 2
-    m_Value: {x: 0.14702517, y: -15.259823, z: -0.045783576}
+    m_Value: {x: 0.5429318, y: -15.260378, z: -0.053684965}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1181,7 +1181,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 18.348976
     speed: 2
-    m_Value: 17.558828
+    m_Value: 18.348976
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1344,7 +1344,7 @@ MonoBehaviour:
       height: 1447.9019
     m_MinimalGUI: 1
   m_defaultScale: 0.65911466
-  m_LastWindowPixelSize: {x: 2531.0002, y: 1463}
+  m_LastWindowPixelSize: {x: 1687.3335, y: 975.3333}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 00000000000000000000
