@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 523575554869217788}
   - component: {fileID: 7671000857328331696}
   - component: {fileID: 6197777285084123549}
+  - component: {fileID: 6659529576991709518}
   m_Layer: 0
   m_Name: Car
   m_TagString: Car
@@ -81,15 +82,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -7885585597123818201, guid: 95ab7e8540bd16949bff0f20cabbb69e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.8, y: 0.93}
+  m_Size: {x: 40.96, y: 14.09}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &8768789170504761549
@@ -131,7 +132,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.86, y: 1.02}
-    newSize: {x: 1.8, y: 0.93}
+    newSize: {x: 40.96, y: 14.09}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -177,7 +178,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.86, y: 1.02}
-    newSize: {x: 1.8, y: 0.93}
+    newSize: {x: 40.96, y: 14.09}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -242,3 +243,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7c9b57a0339474c9fb2d82faf91ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6659529576991709518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7773891469427808469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  uniqueID: 7332603068451159530
+  updateError: 1
+  checkTime: 0.2
