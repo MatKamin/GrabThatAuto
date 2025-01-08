@@ -54,6 +54,24 @@ namespace Pathfinding {
 			return (Vector3)this.position;
 		}
 
+		/// <summary>
+		/// Checks if point is inside the node when seen from above.
+		///
+		/// Since point nodes have no surface area, this method always returns false.
+		/// </summary>
+		public override bool ContainsPoint (Vector3 point) {
+			return false;
+		}
+
+		/// <summary>
+		/// Checks if point is inside the node in graph space.
+		///
+		/// Since point nodes have no surface area, this method always returns false.
+		/// </summary>
+		public override bool ContainsPointInGraphSpace (Int3 point) {
+			return false;
+		}
+
 		public override void GetConnections (System.Action<GraphNode> action) {
 			if (connections == null) return;
 			for (int i = 0; i < connections.Length; i++) action(connections[i].node);

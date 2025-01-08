@@ -8,15 +8,9 @@ namespace Pathfinding.RVO {}
 namespace Pathfinding {
 	using Pathfinding.Util;
 
-#if UNITY_5_0
-	/// <summary>Used in Unity 5.0 since the HelpURLAttribute was first added in Unity 5.1</summary>
-	public class HelpURLAttribute : Attribute {
-	}
-#endif
-
 	[System.Serializable]
 	/// <summary>Stores editor colors</summary>
-	public class AstarColor {
+	public class AstarColor : ISerializationCallbackReceiver {
 		public Color _SolidColor;
 		public Color _UnwalkableNode;
 		public Color _BoundsHandles;
@@ -77,7 +71,7 @@ namespace Pathfinding {
 		/// It is a bit ugly though, but oh well.
 		/// </summary>
 		public void PushToStatic (AstarPath astar) {
-			_AreaColors  = _AreaColors ?? new Color[1];
+			_AreaColors  = _AreaColors ?? new Color[0];
 
 			SolidColor = _SolidColor;
 			UnwalkableNode = _UnwalkableNode;
@@ -86,6 +80,15 @@ namespace Pathfinding {
 			ConnectionHighLerp = _ConnectionHighLerp;
 			MeshEdgeColor = _MeshEdgeColor;
 			AreaColors = _AreaColors;
+		}
+
+		public void OnBeforeSerialize () {}
+
+		public void OnAfterDeserialize () {
+			// Patch bad initialization code in earlier versions that made it start out with a single transparent color.
+			if (_AreaColors != null && _AreaColors.Length == 1 && _AreaColors[0] == default) {
+				_AreaColors = new Color[0];
+			}
 		}
 
 		public AstarColor () {
@@ -167,7 +170,7 @@ namespace Pathfinding {
 		/// GraphMask mask1 = GraphMask.FromGraphName("My Grid Graph");
 		/// GraphMask mask2 = GraphMask.FromGraphName("My Other Grid Graph");
 		///
-		/// NNConstraint nn = NNConstraint.Default;
+		/// NNConstraint nn = NNConstraint.Walkable;
 		///
 		/// nn.graphMask = mask1 | mask2;
 		///
@@ -201,7 +204,7 @@ namespace Pathfinding {
 
 		/// <summary>
 		/// if available, do an XZ check instead of checking on all axes.
-		/// The navmesh/recast graph supports this.
+		/// The navmesh/recast graph as well as the grid/layered grid graph supports this.
 		///
 		/// This can be important on sloped surfaces. See the image below in which the closest point for each blue point is queried for:
 		/// [Open online documentation to see images]
@@ -261,8 +264,24 @@ namespace Pathfinding {
 		/// Equivalent to new NNConstraint ().
 		/// This NNConstraint has settings which works for most, it only finds walkable nodes
 		/// and it constrains distance set by A* Inspector -> Settings -> Max Nearest Node Distance
+		///
+		/// Deprecated: Use <see cref="NNConstraint.Walkable"/> instead. It is equivalent, but the name is more descriptive.
 		/// </summary>
+		[System.Obsolete("Use NNConstraint.Walkable instead. It is equivalent, but the name is more descriptive")]
 		public static NNConstraint Default {
+			get {
+				return new NNConstraint();
+			}
+		}
+
+
+		/// <summary>
+		/// An NNConstraint which filters out unwalkable nodes.
+		/// This is the most commonly used NNConstraint.
+		///
+		/// It also constrains the nearest node to be within the distance set by A* Inspector -> Settings -> Max Nearest Node Distance
+		/// </summary>
+		public static NNConstraint Walkable {
 			get {
 				return new NNConstraint();
 			}
@@ -288,7 +307,7 @@ namespace Pathfinding {
 
 	/// <summary>
 	/// A special NNConstraint which can use different logic for the start node and end node in a path.
-	/// A PathNNConstraint can be assigned to the Path.nnConstraint field, the path will first search for the start node, then it will call <see cref="SetStart"/> and proceed with searching for the end node (nodes in the case of a MultiTargetPath).\n
+	/// A PathNNConstraint can be assigned to the Path.nnConstraint field, the path will first search for the start node, then it will call <see cref="SetStart"/> and proceed with searching for the end node (nodes in the case of a MultiTargetPath).
 	/// The default PathNNConstraint will constrain the end point to lie inside the same area as the start point.
 	/// </summary>
 	public class PathNNConstraint : NNConstraint {
@@ -524,18 +543,18 @@ namespace Pathfinding {
 		/// When enabled, erosion will be recalculated for grid graphs
 		/// after the GUO has been applied.
 		///
-		/// In the below image you can see the different effects you can get with the different values.\n
+		/// In the below image you can see the different effects you can get with the different values.
 		/// The first image shows the graph when no GUO has been applied. The blue box is not identified as an obstacle by the graph, the reason
 		/// there are unwalkable nodes around it is because there is a height difference (nodes are placed on top of the box) so erosion will be applied (an erosion value of 2 is used in this graph).
 		/// The orange box is identified as an obstacle, so the area of unwalkable nodes around it is a bit larger since both erosion and collision has made
-		/// nodes unwalkable.\n
+		/// nodes unwalkable.
 		/// The GUO used simply sets walkability to true, i.e making all nodes walkable.
 		///
 		/// [Open online documentation to see images]
 		///
 		/// When updateErosion=True, the reason the blue box still has unwalkable nodes around it is because there is still a height difference
-		/// so erosion will still be applied. The orange box on the other hand has no height difference and all nodes are set to walkable.\n
-		/// \n
+		/// so erosion will still be applied. The orange box on the other hand has no height difference and all nodes are set to walkable.
+		///
 		/// When updateErosion=False, all nodes walkability are simply set to be walkable in this example.
 		///
 		/// See: Pathfinding.GridGraph
@@ -544,7 +563,7 @@ namespace Pathfinding {
 
 		/// <summary>
 		/// NNConstraint to use.
-		/// The Pathfinding.NNConstraint.SuitableGraph function will be called on the NNConstraint to enable filtering of which graphs to update.\n
+		/// The Pathfinding.NNConstraint.SuitableGraph function will be called on the NNConstraint to enable filtering of which graphs to update.
 		/// Note: As the Pathfinding.NNConstraint.SuitableGraph function is A* Pathfinding Project Pro only, this variable doesn't really affect anything in the free version.
 		/// </summary>
 		public NNConstraint nnConstraint = NNConstraint.None;
@@ -652,7 +671,23 @@ namespace Pathfinding {
 		///
 		/// This method modifies the graph. So it must be called inside while it is safe to modify the graph, for example inside a work item as shown in the example below.
 		///
-		/// \miscsnippets MiscSnippets.cs GraphUpdateObject.RevertFromBackup
+		/// <code>
+		/// // Update the graph
+		/// var guo = new GraphUpdateObject(GetComponent<Collider>().bounds);
+		///
+		/// guo.trackChangedNodes = true;
+		/// AstarPath.active.UpdateGraphs(guo);
+		/// // Apply the update immediately
+		/// AstarPath.active.FlushGraphUpdates();
+		///
+		/// // Then revert the change.
+		/// // The reversion modifies the graph, so it must be done inside a work item
+		/// AstarPath.active.AddWorkItem(() => {
+		///     guo.RevertFromBackup();
+		/// });
+		/// // Apply the reversion immediately
+		/// AstarPath.active.FlushWorkItems();
+		/// </code>
 		///
 		/// See: blocking (view in online documentation for working links)
 		/// See: <see cref="Pathfinding.PathUtilities.UpdateGraphsNoBlock"/>
@@ -719,11 +754,34 @@ namespace Pathfinding {
 
 	/// <summary>Graph which supports the Linecast method</summary>
 	public interface IRaycastableGraph {
+		/// <summary>
+		/// Checks if the straight line of sight between the two points on the graph is obstructed.
+		///
+		/// Returns: True if an obstacle was hit, and false otherwise.
+		/// </summary>
+		/// <param name="start">The start point of the raycast.</param>
+		/// <param name="end">The end point of the raycast.</param>
 		bool Linecast(Vector3 start, Vector3 end);
+		/// <summary>Deprecated:</summary>
+		[System.Obsolete]
 		bool Linecast(Vector3 start, Vector3 end, GraphNode hint);
+		/// <summary>Deprecated:</summary>
+		[System.Obsolete]
 		bool Linecast(Vector3 start, Vector3 end, GraphNode hint, out GraphHitInfo hit);
+		/// <summary>Deprecated:</summary>
+		[System.Obsolete]
 		bool Linecast(Vector3 start, Vector3 end, GraphNode hint, out GraphHitInfo hit, List<GraphNode> trace);
-		bool Linecast(Vector3 start, Vector3 end, out GraphHitInfo hit, List<GraphNode> trace, System.Func<GraphNode, bool> filter);
+		/// <summary>
+		/// Checks if the straight line of sight between the two points on the graph is obstructed.
+		///
+		/// Returns: True if an obstacle was hit, and false otherwise.
+		/// </summary>
+		/// <param name="start">The start point of the raycast.</param>
+		/// <param name="end">The end point of the raycast.</param>
+		/// <param name="hit">Additional information about what was hit.</param>
+		/// <param name="trace">If you supply a list, it will be filled with all nodes that the linecast traversed. You may pass null if you don't care about this.</param>
+		/// <param name="filter">You may supply a callback to indicate which nodes should be considered unwalkable. Note that already unwalkable nodes cannot be made walkable in this way.</param>
+		bool Linecast(Vector3 start, Vector3 end, out GraphHitInfo hit, List<GraphNode> trace = null, System.Func<GraphNode, bool> filter = null);
 	}
 
 	/// <summary>
@@ -745,6 +803,18 @@ namespace Pathfinding {
 
 		public bool Contains (int x, int y) {
 			return !(x < xmin || y < ymin || x > xmax || y > ymax);
+		}
+
+		public Int2 Min {
+			get {
+				return new Int2(xmin, ymin);
+			}
+		}
+
+		public Int2 Max {
+			get {
+				return new Int2(xmax, ymax);
+			}
 		}
 
 		public int Width {
@@ -873,7 +943,7 @@ namespace Pathfinding {
 	/// GraphMask mask1 = GraphMask.FromGraphName("My Grid Graph");
 	/// GraphMask mask2 = GraphMask.FromGraphName("My Other Grid Graph");
 	///
-	/// NNConstraint nn = NNConstraint.Default;
+	/// NNConstraint nn = NNConstraint.Walkable;
 	///
 	/// nn.graphMask = mask1 | mask2;
 	///
@@ -932,13 +1002,16 @@ namespace Pathfinding {
 			return value.ToString();
 		}
 
+		/// <summary>A bitmask containing the given graph index.</summary>
+		public static GraphMask FromGraphIndex(uint graphIndex) => new GraphMask(1 << (int)graphIndex);
+
 		/// <summary>
 		/// A bitmask containing the first graph with the given name.
 		/// <code>
 		/// GraphMask mask1 = GraphMask.FromGraphName("My Grid Graph");
 		/// GraphMask mask2 = GraphMask.FromGraphName("My Other Grid Graph");
 		///
-		/// NNConstraint nn = NNConstraint.Default;
+		/// NNConstraint nn = NNConstraint.Walkable;
 		///
 		/// nn.graphMask = mask1 | mask2;
 		///
@@ -956,11 +1029,24 @@ namespace Pathfinding {
 
 	#region Delegates
 
-	/* Delegate with on Path object as parameter.
-	 * This is used for callbacks when a path has finished calculation.\n
-	 * Example function:
-	 * \snippet MiscSnippets.cs OnPathDelegate
-	 */
+	/// <summary>
+	/// Delegate with on Path object as parameter.
+	/// This is used for callbacks when a path has finished calculation.
+	/// Example function:
+	/// <code>
+	/// public void Start () {
+	///     // Assumes a Seeker component is attached to the GameObject
+	///     Seeker seeker = GetComponent<Seeker>();
+	///
+	///     // seeker.pathCallback is a OnPathDelegate, we add the function OnPathComplete to it so it will be called whenever a path has finished calculating on that seeker
+	///     seeker.pathCallback += OnPathComplete;
+	/// }
+	///
+	/// public void OnPathComplete (Path p) {
+	///     Debug.Log("This is called when a path is completed on the seeker attached to this GameObject");
+	/// }
+	/// </code>
+	/// </summary>
 	public delegate void OnPathDelegate(Path p);
 
 	public delegate void OnGraphDelegate(NavGraph graph);
@@ -1123,12 +1209,20 @@ namespace Pathfinding {
 
 	/// <summary>Internal state of a path in the pipeline</summary>
 	public enum PathState {
+		/// <summary>Path has been created but not yet scheduled</summary>
 		Created = 0,
+		/// <summary>Path is waiting to be calculated</summary>
 		PathQueue = 1,
+		/// <summary>Path is being calculated</summary>
 		Processing = 2,
+		/// <summary>Path is calculated and is waiting to have its callback called</summary>
 		ReturnQueue = 3,
-		Returned = 4
+		/// <summary>The path callback is being called right now (only set inside the callback itself)</summary>
+		Returning = 4,
+		/// <summary>The path has been calculated and its callback has been called</summary>
+		Returned = 5,
 	}
+
 
 	/// <summary>State of a path request</summary>
 	public enum PathCompleteState {

@@ -130,7 +130,7 @@ namespace Pathfinding.Serialization {
 			// Fortunately it should be extremely rare to have to serialize references to unity objects in a standalone player.
 			var realPath = UnityEditor.AssetDatabase.GetAssetPath(obj);
 			var match = System.Text.RegularExpressions.Regex.Match(realPath, @"Resources/(.*?)(\.\w+)?$");
-			if (match != null) path = match.Groups[1].Value;
+			if (match.Success) path = match.Groups[1].Value;
 #endif
 			QuotedField("Name", path);
 			output.Append(", ");
@@ -259,7 +259,7 @@ namespace Pathfinding.Serialization {
 				var arr = Array.CreateInstance(tp.GetElementType(), ls.Count);
 				ls.ToArray().CopyTo(arr, 0);
 				return arr;
-			} else if (Type.Equals(tp, typeof(Mesh)) || Type.Equals(tp, typeof(Texture2D)) || Type.Equals(tp, typeof(Transform)) || Type.Equals(tp, typeof(GameObject))) {
+			} else if (typeof(UnityEngine.Object).IsAssignableFrom(tp)) {
 				return DeserializeUnityObject();
 			} else {
 				var obj = populate ?? Activator.CreateInstance(tp);

@@ -31,21 +31,21 @@ namespace Pathfinding {
 		/// See: <see cref="shouldRecalculatePath"/>
 		/// See: <see cref="SearchPath"/>
 		///
-		/// Deprecated: This has been renamed to \reflink{autoRepath.interval}.
-		/// See: \reflink{AutoRepathPolicy}
+		/// Deprecated: This has been renamed to <see cref="autoRepath.period"/>.
+		/// See: <see cref="AutoRepathPolicy"/>
 		/// </summary>
 		public float repathRate {
 			get {
-				return this.autoRepath.interval;
+				return this.autoRepath.period;
 			}
 			set {
-				this.autoRepath.interval = value;
+				this.autoRepath.period = value;
 			}
 		}
 
 		/// <summary>
 		/// \copydoc Pathfinding::IAstarAI::canSearch
-		/// Deprecated: This has been superseded by \reflink{autoRepath.mode}.
+		/// Deprecated: This has been superseded by <see cref="autoRepath.mode"/>.
 		/// </summary>
 		public bool canSearch {
 			get {
@@ -216,6 +216,8 @@ namespace Pathfinding {
 		/// <summary>Cached CharacterController component</summary>
 		protected CharacterController controller;
 
+		/// <summary>Cached RVOController component</summary>
+		protected RVOController rvoController;
 
 		/// <summary>
 		/// Plane which this agent is moving in.
@@ -320,11 +322,13 @@ namespace Pathfinding {
 			}
 		}
 
-		/// <summary>
-		/// Velocity that this agent wants to move with.
-		/// Includes gravity and local avoidance if applicable.
-		/// </summary>
-		public Vector3 desiredVelocity { get { return lastDeltaTime > 0.00001f ? movementPlane.ToWorld(lastDeltaPosition / lastDeltaTime, verticalVelocity) : Vector3.zero; } }
+		/// <summary>\copydoc Pathfinding::IAstarAI::desiredVelocity</summary>
+		public Vector3 desiredVelocity {
+			get { return lastDeltaTime > 0.00001f ? movementPlane.ToWorld(lastDeltaPosition / lastDeltaTime, verticalVelocity) : Vector3.zero; }
+		}
+
+		/// <summary>\copydoc Pathfinding::IAstarAI::endOfPath</summary>
+		public abstract Vector3 endOfPath { get; }
 
 		/// <summary>\copydoc Pathfinding::IAstarAI::isStopped</summary>
 		public bool isStopped { get; set; }
@@ -335,7 +339,7 @@ namespace Pathfinding {
 		/// <summary>True if the path should be automatically recalculated as soon as possible</summary>
 		protected virtual bool shouldRecalculatePath {
 			get {
-				return !waitingForPathCalculation && autoRepath.ShouldRecalculatePath((IAstarAI)this);
+				return !waitingForPathCalculation && autoRepath.ShouldRecalculatePath(position, radius, destination);
 			}
 		}
 
@@ -355,6 +359,7 @@ namespace Pathfinding {
 		public virtual void FindComponents () {
 			tr = transform;
 			seeker = GetComponent<Seeker>();
+			rvoController = GetComponent<RVOController>();
 			// Find attached movement components
 			controller = GetComponent<CharacterController>();
 			rigid = GetComponent<Rigidbody>();
@@ -394,6 +399,7 @@ namespace Pathfinding {
 			if (clearPath) ClearPath();
 			prevPosition1 = prevPosition2 = simulatedPosition = newPosition;
 			if (updatePosition) tr.position = newPosition;
+			if (rvoController != null) rvoController.Move(Vector3.zero);
 			if (clearPath) SearchPath();
 		}
 
@@ -477,7 +483,7 @@ namespace Pathfinding {
 
 			// Request a path to be calculated from our current position to the destination
 			ABPath p = ABPath.Construct(start, end, null);
-			SetPath(p);
+			SetPath(p, false);
 		}
 
 		/// <summary>
@@ -506,7 +512,11 @@ namespace Pathfinding {
 		protected abstract void ClearPath();
 
 		/// <summary>\copydoc Pathfinding::IAstarAI::SetPath</summary>
-		public void SetPath (Path path) {
+		public void SetPath (Path path, bool updateDestinationFromPath = true) {
+			if (updateDestinationFromPath && path is ABPath abPath && !(path is RandomPath)) {
+				this.destination = abPath.originalEndPoint;
+			}
+
 			if (path == null) {
 				CancelCurrentPathRequest();
 				ClearPath();
@@ -516,7 +526,7 @@ namespace Pathfinding {
 				seeker.CancelCurrentPathRequest();
 				seeker.StartPath(path);
 				autoRepath.DidRecalculatePath(destination);
-			} else if (path.PipelineState == PathState.Returned) {
+			} else if (path.PipelineState >= PathState.Returning) {
 				// Path has already been calculated
 
 				// We might be calculating another path at the same time, and we don't want that path to override this one. So cancel it.
@@ -548,6 +558,11 @@ namespace Pathfinding {
 
 		/// <summary>Calculates how far to move during a single frame</summary>
 		protected Vector2 CalculateDeltaToMoveThisFrame (Vector2 position, float distanceToEndOfPath, float deltaTime) {
+			if (rvoController != null && rvoController.enabled) {
+				// Use RVOController to get a processed delta position
+				// such that collisions will be avoided if possible
+				return movementPlane.ToPlane(rvoController.CalculateMovementDelta(movementPlane.ToWorld(position, 0), deltaTime));
+			}
 			// Direction and distance to move during this frame
 			return Vector2.ClampMagnitude(velocity2D * deltaTime, distanceToEndOfPath);
 		}
@@ -730,6 +745,7 @@ namespace Pathfinding {
 			if (!Application.isPlaying || !enabled) FindComponents();
 
 			var color = ShapeGizmoColor;
+			if (rvoController != null && rvoController.locked) color *= 0.5f;
 			if (orientation == OrientationMode.YAxisForward) {
 				Draw.Gizmos.Cylinder(position, Vector3.forward, 0, radius * tr.localScale.x, color);
 			} else {
@@ -738,7 +754,7 @@ namespace Pathfinding {
 
 			if (!float.IsPositiveInfinity(destination.x) && Application.isPlaying) Draw.Gizmos.CircleXZ(destination, 0.2f, Color.blue);
 
-			autoRepath.DrawGizmos((IAstarAI)this);
+			autoRepath.DrawGizmos(position, radius);
 		}
 
 		protected override void Reset () {
@@ -759,6 +775,8 @@ namespace Pathfinding {
 			if (unityThread && !float.IsNaN(centerOffsetCompatibility)) {
 				height = centerOffsetCompatibility*2;
 				ResetShape();
+				var rvo = GetComponent<RVOController>();
+				if (rvo != null) radius = rvo.radiusBackingField;
 				centerOffsetCompatibility = float.NaN;
 			}
 			#pragma warning disable 618

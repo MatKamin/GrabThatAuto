@@ -11,8 +11,6 @@ namespace Pathfinding {
 	/// See: <see cref="AstarPath.GetNearest"/>
 	/// See: <see cref="Pathfinding.GraphUpdateUtilities"/>
 	/// See: <see cref="Pathfinding.PathUtilities"/>
-	///
-	/// \ingroup utils
 	/// </summary>
 	public static class GraphUtilities {
 		/// <summary>
@@ -92,21 +90,16 @@ namespace Pathfinding {
 				uses[0] = uses[1] = uses[2] = false;
 
 				if (node != null) {
-				    // Find out which edges are shared with other nodes
+					// Find out which edges are shared with other nodes
 					for (int j = 0; j < node.connections.Length; j++) {
-						var other = node.connections[j].node as TriangleMeshNode;
-
-				        // Not necessarily a TriangleMeshNode
-						if (other != null) {
-							int a = node.SharedEdge(other);
-							if (a != -1) uses[a] = true;
-						}
+						var conn = node.connections[j];
+						if (conn.shapeEdge != Connection.NoSharedEdge) uses[conn.shapeEdge] = true;
 					}
 
-				    // Loop through all edges on the node
+					// Loop through all edges on the node
 					for (int j = 0; j < 3; j++) {
-				        // The edge is not shared with any other node
-				        // I.e it is an exterior edge on the mesh
+						// The edge is not shared with any other node
+						// I.e it is an exterior edge on the mesh
 						if (!uses[j]) {
 							var i1 = j;
 							var i2 = (j+1) % node.GetVertexCount();
@@ -157,11 +150,13 @@ namespace Pathfinding {
 		/// <param name="callback">The callback will be called once for every contour that is found with the vertices of the contour. The contour always forms a cycle.</param>
 		/// <param name="yMergeThreshold">Contours will be simplified if the y coordinates for adjacent vertices differ by no more than this value.</param>
 		/// <param name="nodes">Only these nodes will be searched. If this parameter is null then all nodes in the grid graph will be searched.</param>
-		public static void GetContours (GridGraph grid, System.Action<Vector3[]> callback, float yMergeThreshold, GridNodeBase[] nodes = null) {
+		/// <param name="connectionFilter">Allows you to disable connections between nodes. If null, no additional filtering will be done. The filter must be symmetric, so that f(A,B) == f(B,A). A contour edge will be generated between two adjacent nodes if this function returns false for the pair.</param>
+		public static void GetContours (GridGraph grid, System.Action<Vector3[]> callback, float yMergeThreshold, GridNodeBase[] nodes = null, System.Func<GraphNode, GraphNode, bool> connectionFilter = null) {
 			// Set of all allowed nodes or null if all nodes are allowed
 			HashSet<GridNodeBase> nodeSet = nodes != null ? new HashSet<GridNodeBase>(nodes) : null;
 
 			// Use all nodes if the nodes parameter is null
+			if (grid is LayerGridGraph lgraph) nodes = nodes ?? lgraph.nodes;
 			nodes = nodes ?? grid.nodes;
 			int[] neighbourXOffsets = grid.neighbourXOffsets;
 			int[] neighbourZOffsets = grid.neighbourZOffsets;
@@ -181,6 +176,8 @@ namespace Pathfinding {
 
 							// Check if there is an obstacle in that direction
 							var startNeighbour = startNode.GetNeighbourAlongDirection(neighbourIndices[startDir]);
+							if (connectionFilter != null && startNeighbour != null && !connectionFilter(startNode, startNeighbour)) startNeighbour = null;
+
 							if ((startNeighbour == null || (nodeSet != null && !nodeSet.Contains(startNeighbour))) && !seenStates.Contains(startState)) {
 								// Start tracing a contour here
 								trace.ClearFast();
@@ -196,6 +193,8 @@ namespace Pathfinding {
 									seenStates.Add(state);
 
 									var neighbour = node.GetNeighbourAlongDirection(neighbourIndices[dir]);
+									if (connectionFilter != null && neighbour != null && !connectionFilter(node, neighbour)) neighbour = null;
+
 									if (neighbour == null || (nodeSet != null && !nodeSet.Contains(neighbour))) {
 										// Draw edge
 										var d0 = neighbourIndices[dir];
@@ -224,6 +223,11 @@ namespace Pathfinding {
 											trace.Add(graphSpacePos);
 										}
 									} else {
+#if UNITY_EDITOR
+										if (!neighbour.HasConnectionInDirection(GridNodeBase.OppositeConnectionDirection(neighbourIndices[dir]))) {
+											throw new System.InvalidOperationException("Cannot calculate contour. The graph contains one-way connections. A contour is not well defined if one-way connections exist.");
+										}
+#endif
 										// Move
 										node = neighbour;
 										dir = (dir + neighbourIndices.Length/2 + 1) % neighbourIndices.Length;

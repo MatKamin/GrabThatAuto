@@ -106,6 +106,11 @@ namespace Pathfinding.Util {
 			return inverseMatrix.MultiplyPoint3x4(point);
 		}
 
+		public Vector3 InverseTransformVector (Vector3 dir) {
+			if (onlyTranslational) return dir;
+			return inverseMatrix.MultiplyVector(dir);
+		}
+
 		public Int3 InverseTransform (Int3 point) {
 			if (onlyTranslational) return point - i3translation;
 			return (Int3)inverseMatrix.MultiplyPoint3x4((Vector3)point);

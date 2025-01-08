@@ -140,6 +140,18 @@ namespace Pathfinding {
 		bool reachedEndOfPath { get; }
 
 		/// <summary>
+		/// End point of path the agent is currently following.
+		/// If the agent has no path (or it might not be calculated yet), this will return the <see cref="destination"/> instead.
+		/// If the agent has no destination it either it will return (+inf,+inf,+inf).
+		///
+		/// The end of the path is usually identical or very close to the <see cref="destination"/>, but it may differ
+		/// if the path for example was blocked by a wall so that the agent couldn't get any closer.
+		///
+		/// This is only updated when the path is recalculated.
+		/// </summary>
+		Vector3 endOfPath { get; }
+
+		/// <summary>
 		/// Position in the world that this agent should move to.
 		///
 		/// If no destination has been set yet, then (+infinity, +infinity, +infinity) will be returned.
@@ -290,6 +302,7 @@ namespace Pathfinding {
 
 		/// <summary>
 		/// Make the AI follow the specified path.
+		///
 		/// In case the path has not been calculated, the script will call seeker.StartPath to calculate it.
 		/// This means the AI may not actually start to follow the path until in a few frames when the path has been calculated.
 		/// The <see cref="pathPending"/> field will as usual return true while the path is being calculated.
@@ -319,7 +332,9 @@ namespace Pathfinding {
 		/// // ai.destination = ...
 		/// </code>
 		/// </summary>
-		void SetPath(Path path);
+		/// <param name="path">The path to follow.</param>
+		/// <param name="updateDestinationFromPath">If true, the #destination property will be set to the end point of the path. If false, the previous destination value will be kept.</param>
+		void SetPath(Path path, bool updateDestinationFromPath = true);
 
 		/// <summary>
 		/// Instantly move the agent to a new position.

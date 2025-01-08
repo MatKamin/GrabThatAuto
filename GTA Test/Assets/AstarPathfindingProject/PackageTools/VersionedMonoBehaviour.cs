@@ -32,7 +32,11 @@ namespace Pathfinding {
 
 		/// <summary>Handle serialization backwards compatibility</summary>
 		void ISerializationCallbackReceiver.OnAfterDeserialize () {
-			var r = OnUpgradeSerializedData(version, false);
+			UpgradeSerializedData(false);
+		}
+
+		protected void UpgradeSerializedData (bool isUnityThread) {
+			var r = OnUpgradeSerializedData(version, isUnityThread);
 
 			// Negative values (-1) indicate that the version number should not be updated
 			if (r >= 0) version = r;

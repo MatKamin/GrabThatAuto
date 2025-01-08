@@ -20,7 +20,7 @@ namespace Pathfinding {
 		/// Side of the node shape which this connection uses.
 		/// Used for mesh nodes.
 		/// A value of 0 corresponds to using the side for vertex 0 and vertex 1 on the node. 1 corresponds to vertex 1 and 2, etc.
-		/// A negative value means that this connection does not use any side at all (this is mostly used for off-mesh links).
+		/// A value of <see cref="NoSharedEdge"/> means that this connection does not use any side at all (this is mostly used for off-mesh links).
 		///
 		/// Note: Due to alignment, the <see cref="node"/> and <see cref="cost"/> fields use 12 bytes which will be padded
 		/// to 16 bytes when used in an array even if this field would be removed.
@@ -31,7 +31,9 @@ namespace Pathfinding {
 		/// </summary>
 		public byte shapeEdge;
 
-		public Connection (GraphNode node, uint cost, byte shapeEdge = 0xFF) {
+		public const byte NoSharedEdge = 0xFF;
+
+		public Connection (GraphNode node, uint cost, byte shapeEdge = NoSharedEdge) {
 			this.node = node;
 			this.cost = cost;
 			this.shapeEdge = shapeEdge;
@@ -511,6 +513,17 @@ namespace Pathfinding {
 		/// <summary>Closest point on the surface of this node to the point p</summary>
 		public abstract Vector3 ClosestPointOnNode(Vector3 p);
 
+		/// <summary>Checks if point is inside the node when seen from above</summary>
+		public virtual bool ContainsPoint (Int3 point) {
+			return ContainsPoint((Vector3)point);
+		}
+
+		/// <summary>Checks if point is inside the node when seen from above.</summary>
+		public abstract bool ContainsPoint(Vector3 point);
+
+		/// <summary>Checks if point is inside the node in graph space</summary>
+		public abstract bool ContainsPointInGraphSpace(Int3 point);
+
 		/// <summary>
 		/// Hash code used for checking if the gizmos need to be updated.
 		/// Will change when the gizmos for the node might change.
@@ -576,6 +589,8 @@ namespace Pathfinding {
 		/// See: <see cref="RemoveConnection"/>
 		///
 		/// Note: If you modify this array or the contents of it you must call <see cref="SetConnectivityDirty"/>.
+		///
+		/// May be null if the node has no connections.
 		/// </summary>
 		public Connection[] connections;
 
@@ -620,7 +635,7 @@ namespace Pathfinding {
 		}
 
 		public override bool ContainsConnection (GraphNode node) {
-			for (int i = 0; i < connections.Length; i++) if (connections[i].node == node) return true;
+			if (connections != null) for (int i = 0; i < connections.Length; i++) if (connections[i].node == node) return true;
 			return false;
 		}
 
@@ -650,7 +665,7 @@ namespace Pathfinding {
 		/// <param name="node">Node to add a connection to</param>
 		/// <param name="cost">Cost of traversing the connection. A cost of 1000 corresponds approximately to the cost of moving 1 world unit.</param>
 		public override void AddConnection (GraphNode node, uint cost) {
-			AddConnection(node, cost, -1);
+			AddConnection(node, cost, Connection.NoSharedEdge);
 		}
 
 		/// <summary>
@@ -665,8 +680,8 @@ namespace Pathfinding {
 		/// </summary>
 		/// <param name="node">Node to add a connection to</param>
 		/// <param name="cost">Cost of traversing the connection. A cost of 1000 corresponds approximately to the cost of moving 1 world unit.</param>
-		/// <param name="shapeEdge">Which edge on the shape of this node to use or -1 if no edge is used.</param>
-		public void AddConnection (GraphNode node, uint cost, int shapeEdge) {
+		/// <param name="shapeEdge">Which edge on the shape of this node to use or #Connection.NoSharedEdge if no edge is used.</param>
+		public void AddConnection (GraphNode node, uint cost, byte shapeEdge) {
 			if (node == null) throw new System.ArgumentNullException();
 
 			// Check if we already have a connection to the node
@@ -678,7 +693,7 @@ namespace Pathfinding {
 						// Update edge only if it was a definite edge, otherwise reuse the existing one
 						// This makes it possible to use the AddConnection(node,cost) overload to only update the cost
 						// without changing the edge which is required for backwards compatibility.
-						connections[i].shapeEdge = shapeEdge >= 0 ? (byte)shapeEdge : connections[i].shapeEdge;
+						connections[i].shapeEdge = shapeEdge != Connection.NoSharedEdge ? shapeEdge : connections[i].shapeEdge;
 						return;
 					}
 				}
@@ -737,34 +752,6 @@ namespace Pathfinding {
 				}
 			}
 		}
-
-		/// <summary>Checks if point is inside the node when seen from above</summary>
-		public virtual bool ContainsPoint (Int3 point) {
-			return ContainsPoint((Vector3)point);
-		}
-
-		/// <summary>
-		/// Checks if point is inside the node when seen from above.
-		///
-		/// Note that <see cref="ContainsPointInGraphSpace"/> is faster than this method as it avoids
-		/// some coordinate transformations. If you are repeatedly calling this method
-		/// on many different nodes but with the same point then you should consider
-		/// transforming the point first and then calling ContainsPointInGraphSpace.
-		/// <code>
-		/// Int3 p = (Int3)graph.transform.InverseTransform(point);
-		///
-		/// node.ContainsPointInGraphSpace(p);
-		/// </code>
-		/// </summary>
-		public abstract bool ContainsPoint(Vector3 point);
-
-		/// <summary>
-		/// Checks if point is inside the node in graph space.
-		///
-		/// In graph space the up direction is always the Y axis so in principle
-		/// we project the triangle down on the XZ plane and check if the point is inside the 2D triangle there.
-		/// </summary>
-		public abstract bool ContainsPointInGraphSpace(Int3 point);
 
 		public override int GetGizmoHashCode () {
 			var hash = base.GetGizmoHashCode();

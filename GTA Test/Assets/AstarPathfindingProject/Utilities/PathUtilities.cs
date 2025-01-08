@@ -9,7 +9,6 @@ namespace Pathfinding {
 	/// See: <see cref="AstarPath.GetNearest"/>
 	/// See: <see cref="Pathfinding.GraphUpdateUtilities"/>
 	/// See: <see cref="Pathfinding.GraphUtilities"/>
-	/// \ingroup utils
 	/// </summary>
 	public static class PathUtilities {
 		/// <summary>
@@ -17,13 +16,15 @@ namespace Pathfinding {
 		/// This method is extremely fast because it only uses precalculated information.
 		///
 		/// <code>
-		/// GraphNode node1 = AstarPath.active.GetNearest(point1, NNConstraint.Default).node;
-		/// GraphNode node2 = AstarPath.active.GetNearest(point2, NNConstraint.Default).node;
+		/// GraphNode node1 = AstarPath.active.GetNearest(point1, NNConstraint.Walkable).node;
+		/// GraphNode node2 = AstarPath.active.GetNearest(point2, NNConstraint.Walkable).node;
 		///
 		/// if (PathUtilities.IsPathPossible(node1, node2)) {
 		///     // Yay, there is a path between those two nodes
 		/// }
 		/// </code>
+		///
+		/// Equivalent to calling <see cref="IsPathPossible(List<GraphNode>)"/> with a list containing node1 and node2.
 		///
 		/// See: graph-updates (view in online documentation for working links)
 		/// See: <see cref="AstarPath.GetNearest"/>
@@ -175,6 +176,14 @@ namespace Pathfinding {
 		///
 		/// The video below shows the BFS result with varying values of depth. Points are sampled on the nodes using <see cref="GetPointsOnNodes"/>.
 		/// [Open online documentation to see videos]
+		///
+		/// <code>
+		/// var seed = AstarPath.active.GetNearest(transform.position, NNConstraint.Walkable).node;
+		/// var nodes = PathUtilities.BFS(seed, 10);
+		/// foreach (var node in nodes) {
+		///     Debug.DrawRay((Vector3)node.position, Vector3.up, Color.red, 10);
+		/// }
+		/// </code>
 		/// </summary>
 		/// <param name="seed">The node to start the search from.</param>
 		/// <param name="depth">The maximum node-distance from the seed node.</param>
@@ -353,7 +362,7 @@ namespace Pathfinding {
 
 			if (graph == null) throw new System.ArgumentException("g is not a NavGraph");
 
-			NNInfoInternal nn = graph.GetNearestForce(center, NNConstraint.Default);
+			NNInfoInternal nn = graph.GetNearestForce(center, PathNNConstraint.Walkable);
 			center = nn.clampedPosition;
 
 			if (nn.node == null) {
@@ -381,7 +390,7 @@ namespace Pathfinding {
 				while (true) {
 					Vector3 pt = center + dir;
 
-					if (g.Linecast(center, pt, nn.node, out hit)) {
+					if (g.Linecast(center, pt, out hit)) {
 						if (hit.point == Vector3.zero) {
 							// Oops, linecast actually failed completely
 							// try again unless we have tried lots of times
