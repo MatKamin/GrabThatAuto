@@ -1,82 +1,46 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Pathfinding; // Add this to access the Patrol class
 
 public class NPCPatrolDestinationGenerator : MonoBehaviour
 {
-    [Header("Inputs")]
-    public GameObject plane; // Plane defining the area
+    public GameObject mainMap; // Main map with BoxCollider2D
     public int destinationCount = 5; // Number of destinations to generate
-    public LayerMask collisionLayer; // Layer to avoid when generating destinations
     public GameObject destinationPrefab; // Prefab for the destinations
-
-    private Patrol patrolScript; // Reference to the Patrol script
 
     void Start()
     {
-        // Get the Patrol script attached to this NPC
-        patrolScript = GetComponent<Patrol>();
-        if (patrolScript == null)
+        if (mainMap == null || destinationPrefab == null)
         {
-            Debug.LogError("No Patrol script found on this NPC!");
-            return;
-        }
-
-        if (plane == null || destinationPrefab == null)
-        {
-            Debug.LogError("Plane or Destination Prefab is not assigned!");
+            Debug.LogError("Main Map or Destination Prefab is not assigned!");
             return;
         }
 
         // Generate patrol destinations
-        List<Transform> generatedDestinations = GenerateDestinations();
-
-        // Assign the generated destinations to the Patrol script
-        patrolScript.targets = generatedDestinations.ToArray();
+        GenerateDestinations();
     }
 
-    List<Transform> GenerateDestinations()
+    void GenerateDestinations()
     {
-        Renderer planeRenderer = plane.GetComponent<Renderer>();
-        if (planeRenderer == null)
+        BoxCollider2D mapCollider = mainMap.GetComponent<BoxCollider2D>();
+        if (mapCollider == null)
         {
-            Debug.LogError("Plane does not have a Renderer component!");
-            return null;
+            Debug.LogError("Main Map does not have a BoxCollider2D component!");
+            return;
         }
 
-        Bounds planeBounds = planeRenderer.bounds;
-        List<Transform> destinations = new List<Transform>();
+        Bounds mapBounds = mapCollider.bounds;
 
-        int generated = 0;
-        while (generated < destinationCount)
+        for (int i = 0; i < destinationCount; i++)
         {
-            // Generate a random point within the plane bounds
+            // Generate a random point on top of the map's BoxCollider2D
             Vector3 randomPoint = new Vector3(
-                Random.Range(planeBounds.min.x, planeBounds.max.x),
-                Random.Range(planeBounds.min.y, planeBounds.max.y),
-                Random.Range(planeBounds.min.z, planeBounds.max.z)
+                Random.Range(mapBounds.min.x, mapBounds.max.x),
+                Random.Range(mapBounds.min.y, mapBounds.max.y),
+                0 // Keep the z-axis value zero for 2D
             );
 
-            // Check if the point is valid (not colliding)
-            if (IsPointValid(randomPoint))
-            {
-                // Instantiate the destination prefab
-                GameObject destination = Instantiate(destinationPrefab, randomPoint, Quaternion.identity);
-
-                // Add the destination transform to the list
-                destinations.Add(destination.transform);
-
-                generated++;
-            }
+            // Instantiate the destination prefab at the generated point
+            Instantiate(destinationPrefab, randomPoint, Quaternion.identity);
         }
-
-        return destinations;
-    }
-
-    bool IsPointValid(Vector3 point)
-    {
-        // Check for collisions using a sphere cast
-        float checkRadius = 0.5f; // Radius for collision checking
-        return !Physics.CheckSphere(point, checkRadius, collisionLayer);
     }
 }

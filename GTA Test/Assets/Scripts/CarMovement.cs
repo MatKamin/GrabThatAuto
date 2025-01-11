@@ -101,14 +101,21 @@ public class CarMovement : MonoBehaviour
     {
         // Ignore collisions with the Player tag
         if (collision.CompareTag("Player")) return;
+        if (collision.CompareTag("Street")) return;
 
-        Debug.Log($"Car triggered collision with: {collision.gameObject.name}");
-        currentSpeed = 0f; // Stop the car
-
-        // Optional: Check for specific tags or layers
-        if (collision.CompareTag("Obstacle"))
-        {
-            Debug.Log("Collision with an obstacle!");
+        if (collision.CompareTag("NPC")) {
+            NPCHealth npcHealth = collision.GetComponent<NPCHealth>();
+            if (npcHealth != null)
+            {
+                Debug.Log($"Car hit NPC: {collision.gameObject.name}");
+                
+                // Calculate damage based on car speed (optional)
+                int damage = Mathf.RoundToInt(Mathf.Abs(currentSpeed) * 50);
+                npcHealth.TakeDamage(damage);
+            }
+        } else {
+            Debug.Log($"Car triggered collision with: {collision.gameObject.name}");
+            currentSpeed = 0f; // Stop the car
         }
     }
 
@@ -119,7 +126,10 @@ public class CarMovement : MonoBehaviour
 
         // Handle ongoing trigger collision (optional)
         Debug.Log($"Car is still triggering with: {collision.gameObject.name}");
-        currentSpeed = 0f; // Stop the car
+        
+        if (!collision.CompareTag("NPC")) {
+            currentSpeed = 0f; // Stop the car
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision)

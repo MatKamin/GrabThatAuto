@@ -6,11 +6,14 @@ TagManager:
   tags:
   - Car
   - Destination
+  - Street
+  - Obstacle
+  - NPC
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Street
   - Water
   - UI
   - 
