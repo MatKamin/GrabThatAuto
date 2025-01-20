@@ -4,6 +4,8 @@ public class PlayerAttack : MonoBehaviour
 {
     public Animator animator; // Reference to the Animator component
     public string meleeAttackTrigger = "MeleeAttack"; // Trigger name in Animator for melee attack
+    public string pistolAttackTrigger = "PistolAttack"; // Trigger name for pistol attack
+    public string rifleAttackTrigger = "RifleAttack"; // Trigger name for rifle attack
     public float attackCooldown = 1f; // Cooldown time between attacks
     private float lastAttackTime = 0f; // Tracks the last attack time
 
@@ -12,11 +14,13 @@ public class PlayerAttack : MonoBehaviour
     public LayerMask enemyLayers; // Layer mask to identify enemies
     public int meleeDamage = 20; //%%% Adjustable melee damage
 
-    // Gun-related placeholders for future functionality
-    public bool hasGun = false; // Whether the player has a gun
-    public GameObject bulletPrefab; // Prefab for the bullet
-    public Transform gunPoint; // Point where the gun fires bullets
-    public float bulletSpeed = 10f; // Speed of the bullet
+    // Projectile-related variables
+    public GameObject pistolProjectilePrefab; //%%% Prefab for pistol projectiles
+    public GameObject rifleProjectilePrefab; //%%% Prefab for rifle projectiles
+    public Transform gunPoint; //%%% The point where projectiles are spawned
+
+    // Reference to the WeaponSwitcher script
+    public WeaponSwitcher weaponSwitcher; //%%% Assign the WeaponSwitcher instance here
 
     void Start()
     {
@@ -26,21 +30,40 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        // Monitor the current Animator state
-        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
-
         // Check for input and cooldown
         if (Input.GetKeyDown(KeyCode.Space) && Time.time >= lastAttackTime + attackCooldown)
         {
-            if (hasGun)
-            {
-                Shoot();
-            }
-            else
-            {
-                MeleeAttack();
-            }
+            HandleAttack();
             lastAttackTime = Time.time; // Update the last attack time
+        }
+    }
+
+    private void HandleAttack()
+    {
+        // Determine the current weapon from the WeaponSwitcher
+        int weaponIndex = weaponSwitcher.currentWeaponIndex;
+
+        switch (weaponIndex)
+        {
+            case 0: // Knife (Melee)
+                MeleeAttack();
+                break;
+
+            case 1: // Pistol
+                FireProjectile(pistolProjectilePrefab);
+                TriggerAttackAnimation(pistolAttackTrigger);
+                Debug.Log("Pistol attack triggered.");
+                break;
+
+            case 2: // Rifle
+                FireProjectile(rifleProjectilePrefab);
+                TriggerAttackAnimation(rifleAttackTrigger);
+                Debug.Log("Rifle attack triggered.");
+                break;
+
+            default:
+                Debug.LogWarning("Unknown weapon index!");
+                break;
         }
     }
 
@@ -66,22 +89,21 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void Shoot()
+    private void FireProjectile(GameObject projectilePrefab)
     {
-        if (bulletPrefab != null && gunPoint != null)
+        if (projectilePrefab != null && gunPoint != null)
         {
-            // Instantiate a bullet at the gun point
-            GameObject bullet = Instantiate(bulletPrefab, gunPoint.position, gunPoint.rotation);
+            // Instantiate the projectile at the gun point
+            GameObject projectile = Instantiate(projectilePrefab, gunPoint.position, gunPoint.rotation);
 
-            // Add velocity to the bullet
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.linearVelocity = gunPoint.right * bulletSpeed;
-            }
-
-            Debug.Log("Shot fired!");
+            // Debugging the projectile spawn
+            Debug.Log($"Projectile spawned: {projectile.name}");
         }
+    }
+
+    private void TriggerAttackAnimation(string triggerName)
+    {
+        SetTriggerDebug(triggerName);
     }
 
     private void SetTriggerDebug(string triggerName)
