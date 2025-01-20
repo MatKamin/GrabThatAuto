@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4196114830482788049}
   - component: {fileID: 6521911556830191985}
   - component: {fileID: 5187081693778129721}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bloodlake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,4 +100,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d21d1c8da13c5d46a27d61025b1c99d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeTimeSeconds: 5
+  fadeTimeSeconds: 120

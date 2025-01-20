@@ -12,7 +12,7 @@ public class NPCHealth : MonoBehaviour
 
     [Header("Bloodlake Settings")]
     public GameObject bloodlakePrefab; //%%% Assign the bloodlake sprite prefab here
-    public int bloodlakeFadeTimeMs = 2000; //%%% Time in milliseconds for the bloodlake to fade
+    public int bloodlakeFadeTimeMs = 120000; //%%% Time in milliseconds for the bloodlake to fade
 
     [Header("Blood Splash Settings")]
     public GameObject bloodSplashPrefab; //%%% Assign the blood splash particle prefab here (created in Step 2)

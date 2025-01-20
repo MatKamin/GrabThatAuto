@@ -14,6 +14,9 @@ public class WeaponSwitcher : MonoBehaviour
     [Header("Animator Reference")]
     public Animator playerAnimator; // Reference to the Player's Animator component
 
+    [Header("PlayerAttack Reference")]
+    public PlayerAttack playerAttack; // Reference to the PlayerAttack script
+
     void Start()
     {
         // Validate input and set the initial weapon
@@ -41,8 +44,15 @@ public class WeaponSwitcher : MonoBehaviour
             return;
         }
 
+        if (playerAttack == null)
+        {
+            Debug.LogError("PlayerAttack script is not assigned!");
+            return;
+        }
+
         // Initialize with the first weapon
         UpdateWeaponDisplay();
+        playerAttack.UpdateAmmoOnWeaponSwitch(currentWeaponIndex); // Notify PlayerAttack
     }
 
     void Update()
@@ -61,6 +71,7 @@ public class WeaponSwitcher : MonoBehaviour
 
         // Update the weapon display and animator
         UpdateWeaponDisplay();
+        playerAttack.UpdateAmmoOnWeaponSwitch(currentWeaponIndex); // Notify PlayerAttack
     }
 
     private void UpdateWeaponDisplay()
@@ -74,3 +85,4 @@ public class WeaponSwitcher : MonoBehaviour
         Debug.Log($"Animator switched to: {weaponAnimators[currentWeaponIndex].name}");
     }
 }
+

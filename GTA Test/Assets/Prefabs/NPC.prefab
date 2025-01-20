@@ -329,4 +329,5 @@ MonoBehaviour:
   maxHP: 100
   continuousDamage: 10
   bloodlakePrefab: {fileID: 9214047261219153727, guid: 515e63c4c21292c42adbf9b9b12ff5af, type: 3}
-  bloodlakeFadeTimeMs: 5000
+  bloodlakeFadeTimeMs: 120000
+  bloodSplashPrefab: {fileID: 4874241607242012221, guid: 6b43d54b257bc8047b07f2490b321165, type: 3}
