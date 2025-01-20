@@ -36,18 +36,13 @@ public class PlayerMovement : MonoBehaviour
         // Update Animator parameters
         animator.SetFloat("Speed", movement.sqrMagnitude); // Total movement speed
 
-        // Handle idle animation
+        // Handle idle animations with Animator parameters instead of disabling it
         if (movement.sqrMagnitude == 0)
         {
-            animator.enabled = false; // Disable Animator when idle
             if (idleSprite != null) // Ensure idleSprite is assigned
             {
-                spriteRenderer.sprite = idleSprite; // Set to the idle sprite
+                spriteRenderer.sprite = idleSprite; // Set to the idle sprite (optional visual feedback)
             }
-        }
-        else
-        {
-            animator.enabled = true; // Enable Animator when moving
         }
     }
 

@@ -1,0 +1,322 @@
+Using pre-set license
+Built from '6000.0/release' branch; Version is '6000.0.25f1 (4859ab7b5a49) revision 4741547'; Using compiler version '193933523'; Build Type 'Release'
+OS: 'Windows 11  (10.0.22631) 64bit Professional' Language: 'en' Physical Memory: 64672 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity 6000.0.25f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker7
+-projectPath
+C:/Users/Mateusz Kaminski/Desktop/FH Campus Wien/SE/GrabThatAuto/GTA Test
+-logFile
+Logs/AssetImportWorker7.log
+-srvPort
+58439
+-job-worker-count
+15
+-background-job-worker-count
+8
+-asset-garbage-collectors
+1
+Successfully changed project path to: C:/Users/Mateusz Kaminski/Desktop/FH Campus Wien/SE/GrabThatAuto/GTA Test
+C:/Users/Mateusz Kaminski/Desktop/FH Campus Wien/SE/GrabThatAuto/GTA Test
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [59884]  Target information:
+
+Player connection [59884]  * "[IP] 192.168.0.2 [Port] 0 [Flags] 2 [Guid] 1848352340 [EditorId] 1848352340 [Version] 1048832 [Id] WindowsEditor(7,Stacjonarny) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [59884]  * "[IP] 192.168.56.1 [Port] 0 [Flags] 2 [Guid] 1848352340 [EditorId] 1848352340 [Version] 1048832 [Id] WindowsEditor(7,Stacjonarny) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [59884]  * "[IP] 10.5.0.2 [Port] 0 [Flags] 2 [Guid] 1848352340 [EditorId] 1848352340 [Version] 1048832 [Id] WindowsEditor(7,Stacjonarny) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [59884] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [59884] Host joined alternative multi-casting on [225.0.0.222:34997]...
+JobSystem: Creating JobQueue using job-worker-count value 15
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 1.92 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.25f1 (4859ab7b5a49)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity 6000.0.25f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Mateusz Kaminski/Desktop/FH Campus Wien/SE/GrabThatAuto/GTA Test/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4090 (ID=0x2684)
+    Vendor:   NVIDIA
+    VRAM:     24142 MB
+    Driver:   32.0.15.6636
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity 6000.0.25f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity 6000.0.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity 6000.0.25f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56924
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity 6000.0.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.001831 seconds.
+- Loaded All Assemblies, in  0.241 seconds
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.235 seconds
+Domain Reload Profiling: 474ms
+	BeginReloadAssembly (86ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (0ms)
+	RebuildCommonClasses (21ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (31ms)
+	LoadAllAssembliesAndSetupDomain (94ms)
+		LoadAssemblies (84ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (92ms)
+			TypeCache.Refresh (91ms)
+				TypeCache.ScanAssembly (84ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (235ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (204ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (15ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (4ms)
+			ProcessInitializeOnLoadAttributes (139ms)
+			ProcessInitializeOnLoadMethodAttributes (40ms)
+			AfterProcessingInitializeOnLoad (2ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+Assembly reference Packages/com.unity.cinemachine/Editor/Samples/ExposeHDRPInternals/HDRP-Editor-ref.asmref has no target assembly definition
+========================================================================
+Worker process is ready to serve import requests
+Import Worker Mode flag is 0x00
+Assembly reference Packages/com.unity.cinemachine/Editor/Samples/ExposeHDRPInternals/HDRP-Editor-ref.asmref has no target assembly definition
+Assembly reference Packages/com.unity.cinemachine/Editor/Samples/ExposeHDRPInternals/HDRP-Editor-ref.asmref has no target assembly definition
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.808 seconds
+Assembly reference Packages/com.unity.cinemachine/Editor/Samples/ExposeHDRPInternals/HDRP-Editor-ref.asmref has no target assembly definition
+'Packages/com.unity.cinemachine/Editor/Obsolete/CinemachineVirtualCameraBaseEditor.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+'Packages/com.unity.cinemachine/Editor/Editors/CinemachineVirtualCameraBaseEditor.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+Refreshing native plugins compatible for Editor in 1.09 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+Assembly reference Packages/com.unity.cinemachine/Editor/Samples/ExposeHDRPInternals/HDRP-Editor-ref.asmref has no target assembly definition
+Package Manager log level set to [2]
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.651 seconds
+Domain Reload Profiling: 1454ms
+	BeginReloadAssembly (300ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (4ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (33ms)
+	RebuildCommonClasses (27ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (27ms)
+	LoadAllAssembliesAndSetupDomain (442ms)
+		LoadAssemblies (319ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (217ms)
+			TypeCache.Refresh (139ms)
+				TypeCache.ScanAssembly (128ms)
+			BuildScriptInfoCaches (67ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (651ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (482ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (2ms)
+			BeforeProcessingInitializeOnLoad (64ms)
+			ProcessInitializeOnLoadAttributes (345ms)
+			ProcessInitializeOnLoadMethodAttributes (63ms)
+			AfterProcessingInitializeOnLoad (5ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (7ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Refreshing native plugins compatible for Editor in 2.07 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 213 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7200 unused Assets / (5.0 MB). Loaded Objects now: 7982.
+Memory consumption went from 212.0 MB to 207.0 MB.
+Total: 9.646100 ms (FindLiveObjects: 1.134400 ms CreateObjectMapping: 0.577000 ms MarkObjects: 5.875600 ms  DeleteObjects: 2.046700 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 245328.724418 seconds.
+  path: Assets/Characters/Top_Down_Survivor/feet/strafe_left/survivor-strafe_left_7.png
+  artifactKey: Guid(5ab224b154a880644bc4d20c9dc74dd6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/feet/strafe_left/survivor-strafe_left_7.png using Guid(5ab224b154a880644bc4d20c9dc74dd6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '65a826062d2b1b2a53982054d75d86bc') in 0.0668697 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 4
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Characters/Top_Down_Survivor/feet/strafe_left/survivor-strafe_left_15.png
+  artifactKey: Guid(5f16e2d820e44a446b4c85803c1ed3ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/feet/strafe_left/survivor-strafe_left_15.png using Guid(5f16e2d820e44a446b4c85803c1ed3ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1e7e690f6546467d40ae054e1d8c50c0') in 0.0141817 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 4
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.452699 seconds.
+  path: Assets/Characters/Top_Down_Survivor/feet/walk/survivor-walk_7.png
+  artifactKey: Guid(4d74872fd29c94d4fbffa09c0af1718b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/feet/walk/survivor-walk_7.png using Guid(4d74872fd29c94d4fbffa09c0af1718b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a1be244234d9768fedd43eb2317dbd14') in 0.0320882 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 4
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000013 seconds.
+  path: Assets/Characters/Top_Down_Survivor/feet/walk/survivor-walk_10.png
+  artifactKey: Guid(b8e4cf372a78d7c498cc8f9d86a4dcc4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/feet/walk/survivor-walk_10.png using Guid(b8e4cf372a78d7c498cc8f9d86a4dcc4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '01978a056ee4b831041fec120f4d68a0') in 0.0124402 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 4
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.495243 seconds.
+  path: Assets/Characters/Top_Down_Survivor/flashlight/idle/survivor-idle_flashlight_7.png
+  artifactKey: Guid(80b7ca5146140ad4aae5f5e45c12ed4d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/flashlight/idle/survivor-idle_flashlight_7.png using Guid(80b7ca5146140ad4aae5f5e45c12ed4d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '7efda8e8b8e3790daf85f48c931a159b') in 0.0120683 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000012 seconds.
+  path: Assets/Characters/Top_Down_Survivor/flashlight/idle/survivor-idle_flashlight_13.png
+  artifactKey: Guid(6efc9a1371d53d945838960d65f4286f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/flashlight/idle/survivor-idle_flashlight_13.png using Guid(6efc9a1371d53d945838960d65f4286f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'b238c3bad873a755c89f4b60cd2e4950') in 0.0107021 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 13.546844 seconds.
+  path: Assets/Characters/Top_Down_Survivor/flashlight/meleeattack/survivor-meleeattack_flashlight_7.png
+  artifactKey: Guid(6a6a0625fd7535545aa11dfaef0dafbb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/flashlight/meleeattack/survivor-meleeattack_flashlight_7.png using Guid(6a6a0625fd7535545aa11dfaef0dafbb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c1f83678fec43ca92b872f57929ab8b2') in 0.0119708 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000011 seconds.
+  path: Assets/Characters/Top_Down_Survivor/flashlight/meleeattack/survivor-meleeattack_flashlight_9.png
+  artifactKey: Guid(68d236a4a92848345b48f1aec80b1c5b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/flashlight/meleeattack/survivor-meleeattack_flashlight_9.png using Guid(68d236a4a92848345b48f1aec80b1c5b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3268db375ce74487706e43edce745937') in 0.0119007 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 6.941635 seconds.
+  path: Assets/Characters/Top_Down_Survivor/handgun/move/survivor-move_handgun_7.png
+  artifactKey: Guid(48ccf67091b3cc24792331e2264207ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/handgun/move/survivor-move_handgun_7.png using Guid(48ccf67091b3cc24792331e2264207ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0add16b188b454b7c2d47d1da4a62dbc') in 0.0113646 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000010 seconds.
+  path: Assets/Characters/Top_Down_Survivor/handgun/move/survivor-move_handgun_18.png
+  artifactKey: Guid(a3c99c56512967640856325f169cbbfc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/handgun/move/survivor-move_handgun_18.png using Guid(a3c99c56512967640856325f169cbbfc) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '5fff1039c60c22d33349bc23bf57d54a') in 0.0120806 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 11.545923 seconds.
+  path: Assets/Characters/Top_Down_Survivor/shotgun/idle/survivor-idle_shotgun_7.png
+  artifactKey: Guid(cd8d3c0d73297104d92c59b5602ccdbb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/shotgun/idle/survivor-idle_shotgun_7.png using Guid(cd8d3c0d73297104d92c59b5602ccdbb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2bfcb36bf627aa2911ee6a635d8aa4ac') in 0.0105309 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000009 seconds.
+  path: Assets/Characters/Top_Down_Survivor/shotgun/idle/survivor-idle_shotgun_15.png
+  artifactKey: Guid(08f9f3ab597e14240adcfa0639fa6fc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/shotgun/idle/survivor-idle_shotgun_15.png using Guid(08f9f3ab597e14240adcfa0639fa6fc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c288f6b2c6971075aec4aad2325c3acb') in 0.0100334 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000010 seconds.
+  path: Assets/Characters/Top_Down_Survivor/shotgun/idle/survivor-idle_shotgun_12.png
+  artifactKey: Guid(42257e5e836cb8c4d92fc5bc162a1cce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/shotgun/idle/survivor-idle_shotgun_12.png using Guid(42257e5e836cb8c4d92fc5bc162a1cce) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0a66c748e3aaa0e22f794bd053b7fd3d') in 0.0093207 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 21.560475 seconds.
+  path: Assets/Characters/Top_Down_Survivor/flashlight/move/survivor-move_flashlight_7.png
+  artifactKey: Guid(9be5b1325d83875478d0a0dbbe52d0b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/flashlight/move/survivor-move_flashlight_7.png using Guid(9be5b1325d83875478d0a0dbbe52d0b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '3abe6af6bf87bcef1d9f9d8bc9bae8e3') in 0.026971 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000010 seconds.
+  path: Assets/Characters/Top_Down_Survivor/flashlight/move/survivor-move_flashlight_13.png
+  artifactKey: Guid(36969fb6539ecc04283a82bf0255b193) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Characters/Top_Down_Survivor/flashlight/move/survivor-move_flashlight_13.png using Guid(36969fb6539ecc04283a82bf0255b193) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '44362fa26801adb9e0e30ede99d38533') in 0.0114707 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0

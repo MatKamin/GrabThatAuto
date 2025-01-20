@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 792047924923600295}
   - component: {fileID: 5837918225843144803}
   - component: {fileID: 1149196532055682248}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NPC
   m_TagString: NPC
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ MonoBehaviour:
   autoRepath:
     mode: 2
     period: 2
-    sensitivity: 7.09
+    sensitivity: 20
     maximumPeriod: 0.2
     visualizeSensitivity: 1
   targetCompatibility: {fileID: 0}

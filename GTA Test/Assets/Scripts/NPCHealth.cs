@@ -14,6 +14,9 @@ public class NPCHealth : MonoBehaviour
     public GameObject bloodlakePrefab; //%%% Assign the bloodlake sprite prefab here
     public int bloodlakeFadeTimeMs = 2000; //%%% Time in milliseconds for the bloodlake to fade
 
+    [Header("Blood Splash Settings")]
+    public GameObject bloodSplashPrefab; //%%% Assign the blood splash particle prefab here (created in Step 2)
+
     void Start()
     {
         // Initialize current HP
@@ -41,6 +44,9 @@ public class NPCHealth : MonoBehaviour
         currentHP -= damage;
         Debug.Log($"{gameObject.name} took {damage} damage. Current HP: {currentHP}");
 
+        // Spawn blood splash effect
+        SpawnBloodSplash();
+
         // Check for death
         if (currentHP <= 0)
         {
@@ -53,7 +59,40 @@ public class NPCHealth : MonoBehaviour
         // Reduce health over time for continuous damage
         currentHP -= Mathf.RoundToInt(damage); // Convert floating-point damage to integer
         Debug.Log($"{gameObject.name} is taking continuous damage. Current HP: {currentHP}");
+
+        // Spawn blood splash effect
+        SpawnBloodSplash();
     }
+
+    private void SpawnBloodSplash()
+{
+    if (bloodSplashPrefab != null)
+    {
+        // Instantiate the blood splash
+        GameObject bloodSplash = Instantiate(bloodSplashPrefab, transform.position, Quaternion.identity);
+        Debug.Log("Blood splash prefab instantiated.");
+
+        // Trigger particle system
+        ParticleSystem ps = bloodSplash.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Play();
+            Debug.Log("Blood splash particle system started.");
+        }
+        else
+        {
+            Debug.LogWarning("No ParticleSystem found on BloodSplash prefab!");
+        }
+
+        // Destroy the blood splash
+        Destroy(bloodSplash, 1f);
+    }
+    else
+    {
+        Debug.LogWarning("BloodSplash prefab not assigned!");
+    }
+}
+
 
     private void Die()
     {
