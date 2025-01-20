@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7671000857328331696}
   - component: {fileID: 6197777285084123549}
   - component: {fileID: 6659529576991709518}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Car
   m_TagString: Car
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 0
   m_Sprite: {fileID: -7885585597123818201, guid: 95ab7e8540bd16949bff0f20cabbb69e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
