@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
@@ -231,6 +231,10 @@ MonoBehaviour:
   spriteRotationOffset: 180
   defaultTriggerSize: {x: 1.5, y: 1}
   expandedTriggerSize: {x: 2, y: 1}
+  maxCarHealth: 100
+  player: {fileID: 0}
+  destroyedCarPrefab: {fileID: 7284699608318691469, guid: 873f92d510cc9c347b8afb450e0ab691, type: 3}
+  playerDamageOnCarDestruction: 20
 --- !u!114 &6197777285084123549
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,43 +3,49 @@ using UnityEngine;
 public class CarMovement : MonoBehaviour
 {
     [Header("Car Settings")]
-    public float acceleration = 10f; // Acceleration speed
-    public float deceleration = 5f; // Deceleration speed
-    public float maxSpeed = 20f; // Maximum forward/backward speed
-    public float turnSpeed = 100f; // Speed of turning
-    public float spriteRotationOffset = 90f; // Offset for left-facing sprite (in degrees)
+    public float acceleration = 10f;
+    public float deceleration = 5f;
+    public float maxSpeed = 20f;
+    public float turnSpeed = 100f;
+    public float spriteRotationOffset = 90f;
 
     [Header("Trigger Settings")]
-    public Vector2 defaultTriggerSize = new Vector2(1.5f, 1.0f); // Default trigger size
-    public Vector2 expandedTriggerSize = new Vector2(2.0f, 1.0f); // Expanded trigger size when the player is not in the car
+    public Vector2 defaultTriggerSize = new Vector2(1.5f, 1.0f);
+    public Vector2 expandedTriggerSize = new Vector2(2.0f, 1.0f);
 
-    private Rigidbody2D rb; // Reference to the Rigidbody2D
-    private BoxCollider2D triggerCollider; // Reference to the trigger BoxCollider2D
-    private float currentSpeed = 0f; // Current speed
-    private float steeringInput = 0f; // Input for steering
-    private bool isActive = false; // Is the car currently active (being driven)?
+    [Header("Health Settings")]
+    public int maxCarHealth = 100; // Maximum car health
+    private int currentCarHealth;
+
+    [Header("Player Reference")]
+    public Player player; // Reference to the Player script
+
+    public GameObject destroyedCarPrefab; // Prefab to spawn when the car is destroyed
+    public int playerDamageOnCarDestruction = 20; // Player damage on car destruction
+
+    private Rigidbody2D rb;
+    private BoxCollider2D triggerCollider;
+    private float currentSpeed = 0f;
+    private float steeringInput = 0f;
+    private bool isActive = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         triggerCollider = GetComponent<BoxCollider2D>();
+        currentCarHealth = maxCarHealth; // Initialize car health
 
-        // Ensure the Rigidbody is kinematic
         rb.bodyType = RigidbodyType2D.Kinematic;
-
-        // Set the initial trigger size
-        AdjustTriggerSize(false); // Default state when the player is outside the car
+        AdjustTriggerSize(false); // Default state
     }
 
     void Update()
     {
         if (isActive)
         {
-            // Get player inputs
-            float forwardInput = Input.GetAxis("Vertical"); // W/S or Up/Down keys
-            steeringInput = Input.GetAxis("Horizontal"); // A/D or Left/Right keys
+            float forwardInput = Input.GetAxis("Vertical");
+            steeringInput = Input.GetAxis("Horizontal");
 
-            // Accelerate or decelerate the car based on input
             if (forwardInput > 0)
             {
                 currentSpeed += forwardInput * acceleration * Time.deltaTime;
@@ -50,16 +56,13 @@ public class CarMovement : MonoBehaviour
             }
             else
             {
-                // Apply deceleration when no input is given
                 currentSpeed = Mathf.MoveTowards(currentSpeed, 0, deceleration * Time.deltaTime);
             }
 
-            // Clamp the current speed to max limits
             currentSpeed = Mathf.Clamp(currentSpeed, -maxSpeed, maxSpeed);
         }
         else
         {
-            // No input when the car is not active
             currentSpeed = 0f;
             steeringInput = 0f;
         }
@@ -69,91 +72,137 @@ public class CarMovement : MonoBehaviour
     {
         if (isActive)
         {
-            // Calculate forward direction with sprite rotation offset
             Vector2 forwardDirection = Quaternion.Euler(0, 0, spriteRotationOffset) * transform.right;
-
-            // Move the car using Rigidbody2D
             Vector2 newPosition = rb.position + forwardDirection * currentSpeed * Time.fixedDeltaTime;
             rb.MovePosition(newPosition);
 
-            // Apply steering directly to the rotation
             if (currentSpeed != 0)
             {
-                float direction = Mathf.Sign(currentSpeed); // Determine forward or backward
+                float direction = Mathf.Sign(currentSpeed);
                 float newRotation = rb.rotation - steeringInput * turnSpeed * Time.fixedDeltaTime * direction;
                 rb.MoveRotation(newRotation);
             }
         }
     }
 
-    // Adjust the size of the trigger collider
     private void AdjustTriggerSize(bool isPlayerInCar)
     {
         if (triggerCollider != null)
         {
             triggerCollider.size = isPlayerInCar ? defaultTriggerSize : expandedTriggerSize;
-            Debug.Log($"Trigger size adjusted to: {triggerCollider.size}");
         }
     }
 
-    // Handle trigger collisions
     void OnTriggerEnter2D(Collider2D collision)
     {
-        // Ignore collisions with the Player tag
-        if (collision.CompareTag("Player")) return;
-        if (collision.CompareTag("Street")) return;
+        if (collision.CompareTag("Player") || collision.CompareTag("Street"))
+        {
+            return;
+        }
 
-        if (collision.CompareTag("NPC")) {
+        if (collision.CompareTag("Wall"))
+        {
+            Debug.Log("Car hit a wall!");
+
+            // Reduce car health
+            int carDamage = Mathf.RoundToInt(Mathf.Abs(currentSpeed) * 20); // Higher damage for the car
+            currentCarHealth -= carDamage;
+            Debug.Log($"Car took {carDamage} damage. Current car health: {currentCarHealth}");
+
+            // Reduce player health slightly
+            if (player != null)
+            {
+                int playerDamage = Mathf.RoundToInt(Mathf.Abs(currentSpeed) * 5);
+                player.TakeDamage(playerDamage);
+                Debug.Log($"Player took {playerDamage} damage from wall collision.");
+            }
+
+            // Stop the car
+            currentSpeed = 0f;
+
+            // Handle car destruction
+            if (currentCarHealth <= 0)
+            {
+                DestroyCar();
+            }
+        }
+        else if (collision.CompareTag("NPC"))
+        {
             NPCHealth npcHealth = collision.GetComponent<NPCHealth>();
             if (npcHealth != null)
             {
                 Debug.Log($"Car hit NPC: {collision.gameObject.name}");
-                
-                // Calculate damage based on car speed (optional)
+
                 int damage = Mathf.RoundToInt(Mathf.Abs(currentSpeed) * 50);
                 npcHealth.TakeDamage(damage);
             }
-        } else {
+        }
+        else
+        {
             Debug.Log($"Car triggered collision with: {collision.gameObject.name}");
-            currentSpeed = 0f; // Stop the car
+            currentSpeed = 0f;
         }
     }
 
+    private void DestroyCar()
+    {
+        Debug.Log("Car is destroyed!");
+
+        // Spawn destroyed car prefab
+        if (destroyedCarPrefab != null)
+        {
+            Instantiate(destroyedCarPrefab, transform.position, transform.rotation);
+        }
+
+        // Handle player ejection via CarInteraction
+        CarInteraction carInteraction = player.GetComponent<CarInteraction>();
+        if (carInteraction != null)
+        {
+            carInteraction.ExitCar(); // Eject the player using the existing logic
+        }
+        else
+        {
+            Debug.LogWarning("CarInteraction script not found on the player!");
+        }
+
+        // Apply damage to the player
+        if (player != null)
+        {
+            player.TakeDamage(playerDamageOnCarDestruction);
+        }
+
+        // Destroy the car object
+        Destroy(gameObject);
+    }
+
+
     void OnTriggerStay2D(Collider2D collision)
     {
-        // Ignore collisions with the Player tag
-        if (collision.CompareTag("Player")) return;
-
-        // Handle ongoing trigger collision (optional)
-        Debug.Log($"Car is still triggering with: {collision.gameObject.name}");
-        
-        if (!collision.CompareTag("NPC")) {
+        if (!collision.CompareTag("Player") && !collision.CompareTag("NPC") && !collision.CompareTag("Street"))
+        {
             currentSpeed = 0f; // Stop the car
         }
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        // Ignore collisions with the Player tag
-        if (collision.CompareTag("Player")) return;
-
-        // Handle when the car exits the collision area (optional)
-        Debug.Log($"Car exited trigger with: {collision.gameObject.name}");
+        if (!collision.CompareTag("Player"))
+        {
+            Debug.Log($"Car exited trigger with: {collision.gameObject.name}");
+        }
     }
 
-    // Public method to activate the car
     public void ActivateCar()
     {
         isActive = true;
-        currentSpeed = 0f; // Ensure the car starts stationary
-        AdjustTriggerSize(true); // Shrink the trigger size when the player is in the car
+        currentSpeed = 0f;
+        AdjustTriggerSize(true);
     }
 
-    // Public method to deactivate the car
     public void DeactivateCar()
     {
         isActive = false;
-        currentSpeed = 0f; // Stop the car immediately
-        AdjustTriggerSize(false); // Expand the trigger size when the player is out of the car
+        currentSpeed = 0f;
+        AdjustTriggerSize(false);
     }
 }

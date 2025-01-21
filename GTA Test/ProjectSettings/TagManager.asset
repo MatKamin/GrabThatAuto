@@ -9,6 +9,7 @@ TagManager:
   - Street
   - Obstacle
   - NPC
+  - Wall
   layers:
   - Default
   - TransparentFX

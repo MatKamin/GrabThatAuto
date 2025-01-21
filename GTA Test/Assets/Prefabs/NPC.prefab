@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 792047924923600295}
   - component: {fileID: 5837918225843144803}
   - component: {fileID: 1149196532055682248}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: NPC
   m_TagString: NPC
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -164,7 +164,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 129
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -215,7 +215,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 4294967295
     useGraphRaycasting: 0
-  traversableTags: -3
+  traversableTags: -1
   tagPenalties: 00000000d0070000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
@@ -232,10 +232,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 5
-  radius: 0.58
+  radius: 1
   height: 2
   canMove: 1
-  maxSpeed: 1
+  maxSpeed: 0.6
   gravity: {x: 0, y: 0, z: 0}
   groundMask:
     serializedVersion: 2
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8666261403963036231}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
   m_Name: 
@@ -293,7 +293,7 @@ MonoBehaviour:
   smoothType: 0
   subdivisions: 3
   iterations: 70
-  strength: 0.334
+  strength: 0.562
   uniformLength: 0
   maxSegmentLength: 0.005
   bezierTangentLength: 0.4

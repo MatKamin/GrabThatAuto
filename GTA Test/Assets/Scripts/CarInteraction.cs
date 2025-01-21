@@ -72,8 +72,14 @@ public class CarInteraction : MonoBehaviour
         Debug.Log("Player entered the car: " + currentCar.name);
     }
 
-    private void ExitCar()
+    public void ExitCar()
     {
+        if (currentCar == null)
+        {
+            Debug.LogError("ExitCar called, but currentCar is null!");
+            return;
+        }
+
         // Make the player's sprite visible again
         playerSpriteRenderer.enabled = true;
 
@@ -88,18 +94,16 @@ public class CarInteraction : MonoBehaviour
         }
 
         // Place the player at a specified angle relative to the car
-        if (currentCar != null)
-        {
-            Vector3 carPosition = currentCar.transform.position;
+        Vector3 carPosition = currentCar.transform.position;
 
-            // Calculate the exit position based on the car's rotation and exitAngle
-            Vector3 exitDirection = Quaternion.Euler(0, 0, currentCar.transform.eulerAngles.z + exitAngle) * Vector3.right;
-            Vector3 exitPosition = carPosition + exitDirection.normalized * exitDistance;
+        // Calculate the exit position based on the car's rotation and exitAngle
+        Vector3 exitDirection = Quaternion.Euler(0, 0, currentCar.transform.eulerAngles.z + exitAngle) * Vector3.right;
+        Vector3 exitPosition = carPosition + exitDirection.normalized * exitDistance;
 
-            transform.position = exitPosition; // Move the player to the exit position
-        }
+        transform.position = exitPosition; // Move the player to the exit position
 
         inCar = false;
         Debug.Log("Player exited the car: " + currentCar.name);
     }
+
 }

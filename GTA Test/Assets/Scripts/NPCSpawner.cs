@@ -2,108 +2,61 @@ using UnityEngine;
 using System.Collections.Generic;
 using Pathfinding;
 
-
 public class NPCSpawner : MonoBehaviour
 {
     [Header("NPC Spawning Settings")]
     public GameObject npcPrefab; // NPC prefab to spawn
     public int npcCount = 5; // Number of NPCs to spawn
-    public GameObject mainMap; // Main map object containing BoxCollider2D
+
+    [Header("Spawn Zones")]
+    public List<Transform> spawnZones; // Predefined spawn zones with BoxCollider2D
 
     [Header("Patrol Settings")]
     public int destinationsPerNPC = 5; // Number of patrol destinations per NPC
     public GameObject destinationPrefab; // Prefab for the patrol destinations
 
-    private BoxCollider2D[] mapColliders; // Store all BoxCollider2D components
-    private List<Vector3> destinationPoints; // Stores generated patrol destinations
+    [Header("Collision Settings")]
+    public LayerMask wallLayerMask; // LayerMask for "Wall" objects
 
     void Start()
     {
-        if (npcPrefab == null || mainMap == null || destinationPrefab == null)
+        if (npcPrefab == null || destinationPrefab == null)
         {
-            Debug.LogError("NPC Prefab, Main Map, or Destination Prefab is not assigned!");
+            Debug.LogError("NPC Prefab or Destination Prefab is not assigned!");
             return;
         }
 
-        // Get all BoxCollider2D components from the mainMap
-        mapColliders = mainMap.GetComponents<BoxCollider2D>();
-        if (mapColliders == null || mapColliders.Length == 0)
+        if (spawnZones == null || spawnZones.Count == 0)
         {
-            Debug.LogError("Main Map does not contain any BoxCollider2D components!");
+            Debug.LogError("No spawn zones assigned! Add spawn zones in the Inspector.");
             return;
         }
 
-        // Generate destination points
-        GenerateDestinationPoints();
-
-        // Spawn NPCs at valid spawn points
+        // Spawn NPCs in predefined zones
         SpawnNPCs();
-    }
-
-    void GenerateDestinationPoints()
-    {
-        destinationPoints = new List<Vector3>();
-
-        foreach (var collider in mapColliders)
-        {
-            Bounds bounds = collider.bounds;
-
-            for (int i = 0; i < destinationsPerNPC; i++)
-            {
-                Vector3 randomPoint = new Vector3(
-                    Random.Range(bounds.min.x, bounds.max.x),
-                    Random.Range(bounds.min.y, bounds.max.y),
-                    0 // Ensure z-axis is zero for 2D
-                );
-
-                // Snap the point to be within the collider bounds
-                randomPoint.x = Mathf.Clamp(randomPoint.x, bounds.min.x, bounds.max.x);
-                randomPoint.y = Mathf.Clamp(randomPoint.y, bounds.min.y, bounds.max.y);
-
-                // Add the destination point and instantiate its prefab
-                destinationPoints.Add(randomPoint);
-                Instantiate(destinationPrefab, randomPoint, Quaternion.identity);
-            }
-        }
     }
 
     void SpawnNPCs()
     {
-        if (destinationPoints == null || destinationPoints.Count == 0)
-        {
-            Debug.LogError("No destination points available for spawning NPCs.");
-            return;
-        }
-
         for (int i = 0; i < npcCount; i++)
         {
-            Vector3 spawnPoint;
-            int maxAttempts = 100; // Avoid infinite loops
-            int attempts = 0;
+            Vector3 spawnPoint = GetRandomValidSpawnPoint();
 
-            do
+            if (spawnPoint == Vector3.zero)
             {
-                // Generate a random point within the world bounds
-                spawnPoint = GenerateRandomPointOutsideColliders();
-                attempts++;
-            }
-            while (IsPointInsideColliders(spawnPoint) && attempts < maxAttempts);
-
-            if (attempts >= maxAttempts)
-            {
-                Debug.LogWarning("Failed to find a valid spawn point for an NPC after multiple attempts.");
+                Debug.LogWarning("Failed to find a valid spawn point for an NPC.");
                 continue;
             }
 
             // Spawn the NPC at the chosen spawn point
             GameObject npc = Instantiate(npcPrefab, spawnPoint, Quaternion.identity);
 
-            // Assign patrol destinations to the NPC
-            AssignPatrolTargets(npc);
+            // Generate unique patrol destinations for this NPC
+            GeneratePatrolDestinationsForNPC(npc);
         }
     }
 
-    void AssignPatrolTargets(GameObject npc)
+    void GeneratePatrolDestinationsForNPC(GameObject npc)
     {
         Patrol patrol = npc.GetComponent<Patrol>();
         if (patrol == null)
@@ -112,53 +65,77 @@ public class NPCSpawner : MonoBehaviour
             return;
         }
 
-        // Assign a subset of destination points to this NPC's patrol targets
         List<Transform> npcTargets = new List<Transform>();
+
         for (int i = 0; i < destinationsPerNPC; i++)
         {
-            if (destinationPoints.Count == 0) break;
-
-            // Randomly select a destination point
-            int randomIndex = Random.Range(0, destinationPoints.Count);
-            Vector3 point = destinationPoints[randomIndex];
+            // Generate a random valid point in a random spawn zone
+            Vector3 point = GetRandomValidSpawnPoint();
 
             // Create a GameObject for the target and assign its Transform
-            GameObject targetObject = new GameObject("PatrolTarget");
-            targetObject.transform.position = point;
+            GameObject targetObject = Instantiate(destinationPrefab, point, Quaternion.identity);
+            targetObject.name = $"PatrolTarget_{npc.name}_{i}"; // Unique name for debugging
             npcTargets.Add(targetObject.transform);
-
-            // Remove the used point to avoid duplication
-            destinationPoints.RemoveAt(randomIndex);
         }
 
+        // Assign the generated targets to the NPC's patrol
         patrol.targets = npcTargets.ToArray();
     }
 
-    Vector3 GenerateRandomPointOutsideColliders()
+    Vector3 GetRandomValidSpawnPoint()
     {
-        // Generate a random point in the general area
-        Bounds totalBounds = mapColliders[0].bounds;
-        foreach (var collider in mapColliders)
+        int maxAttempts = 100; // Limit the number of attempts to avoid infinite loops
+        int attempts = 0;
+
+        while (attempts < maxAttempts)
         {
-            totalBounds.Encapsulate(collider.bounds);
+            attempts++;
+
+            // Get a random point in the spawn zones
+            Vector3 point = GetRandomPointInSpawnZones();
+
+            // Check if the point overlaps with any "Wall" objects
+            if (!IsPointOverlappingWithWalls(point))
+            {
+                return point; // Valid point found
+            }
         }
 
+        Debug.LogWarning("Failed to find a valid spawn point after multiple attempts.");
+        return Vector3.zero; // Return zero if no valid point is found
+    }
+
+    Vector3 GetRandomPointInSpawnZones()
+    {
+        if (spawnZones.Count == 0)
+        {
+            Debug.LogError("No spawn zones available.");
+            return Vector3.zero;
+        }
+
+        // Choose a random spawn zone
+        Transform randomZone = spawnZones[Random.Range(0, spawnZones.Count)];
+        BoxCollider2D collider = randomZone.GetComponent<BoxCollider2D>();
+
+        if (collider == null)
+        {
+            Debug.LogError($"Spawn zone {randomZone.name} does not have a BoxCollider2D!");
+            return Vector3.zero;
+        }
+
+        // Generate a random point within the bounds of the zone
+        Bounds bounds = collider.bounds;
         return new Vector3(
-            Random.Range(totalBounds.min.x, totalBounds.max.x),
-            Random.Range(totalBounds.min.y, totalBounds.max.y),
-            0
+            Random.Range(bounds.min.x, bounds.max.x),
+            Random.Range(bounds.min.y, bounds.max.y),
+            0 // Ensure z-axis is zero for 2D
         );
     }
 
-    bool IsPointInsideColliders(Vector3 point)
+    bool IsPointOverlappingWithWalls(Vector3 point)
     {
-        foreach (var collider in mapColliders)
-        {
-            if (collider.bounds.Contains(point))
-            {
-                return true;
-            }
-        }
-        return false;
+        // Check for overlap with any 2D Collider on the "Wall" layer
+        Collider2D hit = Physics2D.OverlapPoint(point, wallLayerMask);
+        return hit != null; // Returns true if the point overlaps with a "Wall"
     }
 }
