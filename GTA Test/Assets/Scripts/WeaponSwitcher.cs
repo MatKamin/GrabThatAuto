@@ -17,6 +17,10 @@ public class WeaponSwitcher : MonoBehaviour
     [Header("PlayerAttack Reference")]
     public PlayerAttack playerAttack; // Reference to the PlayerAttack script
 
+    [Header("Audio Settings")]
+    public AudioClip switchWeaponSound; // Sound played when switching weapons
+    private AudioSource audioSource; // AudioSource for playing sounds
+
     void Start()
     {
         // Validate input and set the initial weapon
@@ -50,6 +54,13 @@ public class WeaponSwitcher : MonoBehaviour
             return;
         }
 
+        // Get or add an AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
         // Initialize with the first weapon
         UpdateWeaponDisplay();
         playerAttack.UpdateAmmoOnWeaponSwitch(currentWeaponIndex); // Notify PlayerAttack
@@ -60,7 +71,14 @@ public class WeaponSwitcher : MonoBehaviour
         // Check for TAB key input to switch weapons
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            SwitchToNextWeapon();
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                SwitchToPreviousWeapon(); // Reverse direction
+            }
+            else
+            {
+                SwitchToNextWeapon(); // Default forward direction
+            }
         }
     }
 
@@ -72,6 +90,22 @@ public class WeaponSwitcher : MonoBehaviour
         // Update the weapon display and animator
         UpdateWeaponDisplay();
         playerAttack.UpdateAmmoOnWeaponSwitch(currentWeaponIndex); // Notify PlayerAttack
+
+        // Play switch weapon sound
+        PlaySwitchWeaponSound();
+    }
+
+    private void SwitchToPreviousWeapon()
+    {
+        // Decrement the weapon index and wrap around if necessary
+        currentWeaponIndex = (currentWeaponIndex - 1 + weaponSprites.Length) % weaponSprites.Length;
+
+        // Update the weapon display and animator
+        UpdateWeaponDisplay();
+        playerAttack.UpdateAmmoOnWeaponSwitch(currentWeaponIndex); // Notify PlayerAttack
+
+        // Play switch weapon sound
+        PlaySwitchWeaponSound();
     }
 
     private void UpdateWeaponDisplay()
@@ -84,5 +118,12 @@ public class WeaponSwitcher : MonoBehaviour
         playerAnimator.runtimeAnimatorController = weaponAnimators[currentWeaponIndex];
         Debug.Log($"Animator switched to: {weaponAnimators[currentWeaponIndex].name}");
     }
-}
 
+    private void PlaySwitchWeaponSound()
+    {
+        if (switchWeaponSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(switchWeaponSound);
+        }
+    }
+}

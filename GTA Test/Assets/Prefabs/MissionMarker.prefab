@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.53333336, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.53333336, b: 0.047274146, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -182,7 +182,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.53333336, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.53333336, b: 0.050980393, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -204,9 +204,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e56bf5f399462cc4d974a87136572123, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messageOnEnter: "Chaos reigns supreme, and it's your time to shine\u2014hunt down
+    five unsuspecting targets and leave a trail of destruction in your wake. No one
+    can stop your rise to infamy in this lawless city. \r\nPress E to accept."
+  messageOnExit: 
   uiText: {fileID: 0}
-  messageOnEnter: You are standing on the circle!
-  messageOnExit: You left the circle.
 --- !u!58 &5902931507115192251
 CircleCollider2D:
   m_ObjectHideFlags: 0

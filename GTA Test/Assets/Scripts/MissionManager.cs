@@ -27,6 +27,12 @@ public class MissionManager : MonoBehaviour
     [Header("Mission Activation Zone")]
     public GameObject activationZone; // The object the player must stand on to trigger the mission
 
+    [Header("Audio Settings")]
+    public AudioClip missionStartSound; // Sound for mission start
+    public AudioClip missionSuccessSound; // Sound for mission success
+    public AudioClip missionFailSound; // Sound for mission failure
+    private AudioSource audioSource; // Audio source for playing sounds
+
     private bool missionActive = false;
     private float missionTimer;
     private int currentKills = 0;
@@ -55,6 +61,13 @@ public class MissionManager : MonoBehaviour
         {
             Debug.LogError("Activation Zone is not assigned! Please assign it in the Inspector.");
             return;
+        }
+
+        // Get or add an AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
 
         // Hide UI elements initially
@@ -101,10 +114,13 @@ public class MissionManager : MonoBehaviour
     private void StartMission()
     {
         missionActive = true;
-        missionTimer = missionTimeLimit; 
+        missionTimer = missionTimeLimit;
         currentKills = 0;
 
         Debug.Log("Mission started!");
+
+        // Play mission start sound
+        PlaySound(missionStartSound);
 
         // Hide mission marker
         if (missionMarker != null)
@@ -134,6 +150,9 @@ public class MissionManager : MonoBehaviour
 
             Debug.Log($"Player received {rewardXP} XP and {rewardMoney} Heist Bucks.");
 
+            // Play mission success sound
+            PlaySound(missionSuccessSound);
+
             // Delete the mission marker
             if (missionMarker != null)
             {
@@ -144,6 +163,9 @@ public class MissionManager : MonoBehaviour
         {
             missionText.text = "Mission Failed!";
             Debug.Log("Mission failed!");
+
+            // Play mission fail sound
+            PlaySound(missionFailSound);
 
             // Re-enable the mission marker
             if (missionMarker != null)
@@ -187,5 +209,13 @@ public class MissionManager : MonoBehaviour
         // Check if the player's collider is overlapping the activation zone's collider
         Collider2D playerCollider = player.GetComponent<Collider2D>();
         return zoneCollider.bounds.Intersects(playerCollider.bounds);
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
     }
 }

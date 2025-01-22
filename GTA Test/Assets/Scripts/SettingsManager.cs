@@ -44,6 +44,14 @@ public class SettingsManager : MonoBehaviour
         Debug.Log("Settings Saved: Volume = " + PlayerPrefs.GetFloat(VolumeKey));
     }
 
+    public void OpenCreditsScene()
+    {
+        // Load the CreditsScene
+        SceneManager.LoadScene("CreditsScene");
+        Debug.Log("Opened Credits Scene");
+    }
+
+
     public void RestoreDefaults()
     {
         // Reset the slider to the default value

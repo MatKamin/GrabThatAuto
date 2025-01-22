@@ -1094,6 +1094,9 @@ MonoBehaviour:
   player: {fileID: 952224260}
   missionMarker: {fileID: 2090231265}
   activationZone: {fileID: 1414697563}
+  missionStartSound: {fileID: 8300000, guid: df26b4796ec58ef41b1b9ce49ce4b514, type: 3}
+  missionSuccessSound: {fileID: 8300000, guid: df26b4796ec58ef41b1b9ce49ce4b514, type: 3}
+  missionFailSound: {fileID: 8300000, guid: 80bafdfea8545ef4aa8ac84798e3fa05, type: 3}
 --- !u!4 &63626509
 Transform:
   m_ObjectHideFlags: 0
@@ -10674,6 +10677,8 @@ MonoBehaviour:
   playerMovementScript: {fileID: 952224254}
   exitDistance: 0.1
   exitAngle: 90
+  enterCarSound: {fileID: 8300000, guid: 0ed71dc802392f54da656c7b9faef827, type: 3}
+  exitCarSound: {fileID: 8300000, guid: 0ed71dc802392f54da656c7b9faef827, type: 3}
 --- !u!114 &952224257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10753,6 +10758,7 @@ MonoBehaviour:
   selectedWeaponUI: {fileID: 766891484}
   playerAnimator: {fileID: 952224251}
   playerAttack: {fileID: 952224258}
+  switchWeaponSound: {fileID: 8300000, guid: 8621015eaf58ad64393e78dfe9f50016, type: 3}
 --- !u!114 &952224260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14682,16 +14688,6 @@ PrefabInstance:
       propertyPath: uiText
       value: 
       objectReference: {fileID: 312490384}
-    - target: {fileID: 114775110757016583, guid: 582a75def3e98d141934d0039a5b557f, type: 3}
-      propertyPath: messageOnExit
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114775110757016583, guid: 582a75def3e98d141934d0039a5b557f, type: 3}
-      propertyPath: messageOnEnter
-      value: "Chaos reigns supreme, and it's your time to shine\u2014hunt down five
-        unsuspecting targets and leave a trail of destruction in your wake. No one
-        can stop your rise to infamy in this lawless city. \r\nPress E to accept."
-      objectReference: {fileID: 0}
     - target: {fileID: 4712775463203892329, guid: 582a75def3e98d141934d0039a5b557f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.586

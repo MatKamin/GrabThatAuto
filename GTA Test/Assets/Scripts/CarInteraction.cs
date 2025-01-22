@@ -10,6 +10,21 @@ public class CarInteraction : MonoBehaviour
     public float exitDistance = 1.5f; // Distance to the car's exit point
     public float exitAngle = 90f; // Angle (in degrees) to determine the exit position relative to the car
 
+    [Header("Audio Settings")]
+    public AudioClip enterCarSound; // Sound for entering the car
+    public AudioClip exitCarSound; // Sound for exiting the car
+    private AudioSource audioSource; // AudioSource for playing sounds
+
+    void Start()
+    {
+        // Get or add an AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -68,6 +83,9 @@ public class CarInteraction : MonoBehaviour
         // Place the player on top of the car
         transform.position = currentCar.transform.position;
 
+        // Play enter car sound
+        PlaySound(enterCarSound);
+
         inCar = true;
         Debug.Log("Player entered the car: " + currentCar.name);
     }
@@ -102,8 +120,18 @@ public class CarInteraction : MonoBehaviour
 
         transform.position = exitPosition; // Move the player to the exit position
 
+        // Play exit car sound
+        PlaySound(exitCarSound);
+
         inCar = false;
         Debug.Log("Player exited the car: " + currentCar.name);
     }
 
+    private void PlaySound(AudioClip clip)
+    {
+        if (clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+    }
 }
