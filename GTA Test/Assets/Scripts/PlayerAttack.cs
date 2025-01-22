@@ -39,12 +39,25 @@ public class PlayerAttack : MonoBehaviour
 
     public Text ammoText; // UI text to display current ammo
 
+    // Sound-related variables
+    public AudioClip pistolShotSound; // Sound effect for the pistol shot
+    public AudioClip meleeAttackSound; // Sound effect for melee attack
+    public AudioClip rifleShotSound; // Sound effect for rifle shot
+    private AudioSource audioSource; // Reference to the AudioSource component
+
     void Start()
     {
         currentPistolAmmo = maxPistolAmmo; // Initialize pistol ammo
         currentRifleAmmo = maxRifleAmmo; // Initialize rifle ammo
         UpdateAmmoUI(); // Update the UI text field
         DebugAnimatorParameters();
+
+        // Get or add an AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -110,6 +123,12 @@ public class PlayerAttack : MonoBehaviour
                 Debug.Log($"{enemy.name} took {meleeDamage} melee damage.");
             }
         }
+
+        // Play the melee attack sound
+        if (meleeAttackSound != null)
+        {
+            audioSource.PlayOneShot(meleeAttackSound);
+        }
     }
 
     private void FireProjectile(GameObject projectilePrefab)
@@ -125,8 +144,19 @@ public class PlayerAttack : MonoBehaviour
             }
 
             Debug.Log($"Projectile spawned: {projectile.name}");
+
+            // Play the appropriate sound based on the selected weapon
+            if (weaponSwitcher.currentWeaponIndex == 1 && pistolShotSound != null) // Pistol
+            {
+                audioSource.PlayOneShot(pistolShotSound);
+            }
+            else if (weaponSwitcher.currentWeaponIndex == 2 && rifleShotSound != null) // Rifle
+            {
+                audioSource.PlayOneShot(rifleShotSound);
+            }
         }
     }
+
 
     private IEnumerator FireBurst()
     {
@@ -223,7 +253,6 @@ public class PlayerAttack : MonoBehaviour
             ammoText.text = "Melee";
         }
     }
-
 
     private enum WeaponType
     {

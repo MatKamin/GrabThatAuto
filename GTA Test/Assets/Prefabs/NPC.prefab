@@ -331,3 +331,11 @@ MonoBehaviour:
   bloodlakePrefab: {fileID: 9214047261219153727, guid: 515e63c4c21292c42adbf9b9b12ff5af, type: 3}
   bloodlakeFadeTimeMs: 120000
   bloodSplashPrefab: {fileID: 4874241607242012221, guid: 6b43d54b257bc8047b07f2490b321165, type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: 8ffe38994b73ea24794c802f20e990b1, type: 3}
+  - {fileID: 8300000, guid: 1db1510084c8e0a4784bea80c5a49261, type: 3}
+  - {fileID: 8300000, guid: c5343cd562fef634a8480e2e8ecd2e65, type: 3}
+  - {fileID: 8300000, guid: 89db78dca6ea423459eefd6bf5ee4380, type: 3}
+  - {fileID: 8300000, guid: 58e96beffb8c3af41864978dc0514340, type: 3}
+  - {fileID: 8300000, guid: b28b659c95791154c90db674c06c0bf1, type: 3}
+  deathSound: {fileID: 0}

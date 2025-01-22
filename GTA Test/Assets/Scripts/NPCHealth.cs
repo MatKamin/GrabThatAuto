@@ -17,10 +17,22 @@ public class NPCHealth : MonoBehaviour
     [Header("Blood Splash Settings")]
     public GameObject bloodSplashPrefab; //%%% Assign the blood splash particle prefab here (created in Step 2)
 
+    [Header("Audio Settings")]
+    public AudioClip[] hitSounds; // Array of sound effects for when the NPC gets hit
+    public AudioClip deathSound; // Sound effect for when the NPC dies
+    private AudioSource audioSource; // Reference to the AudioSource component
+
     void Start()
     {
         // Initialize current HP
         currentHP = maxHP;
+
+        // Get or add an AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -44,6 +56,9 @@ public class NPCHealth : MonoBehaviour
         currentHP -= damage;
         Debug.Log($"{gameObject.name} took {damage} damage. Current HP: {currentHP}");
 
+        // Play a random hit sound
+        PlayRandomHitSound();
+
         // Spawn blood splash effect
         SpawnBloodSplash();
 
@@ -51,6 +66,17 @@ public class NPCHealth : MonoBehaviour
         if (currentHP <= 0)
         {
             Die();
+        }
+    }
+
+    private void PlayRandomHitSound()
+    {
+        if (hitSounds != null && hitSounds.Length > 0)
+        {
+            int randomIndex = Random.Range(0, hitSounds.Length);
+            AudioClip randomClip = hitSounds[randomIndex];
+            audioSource.PlayOneShot(randomClip);
+            Debug.Log($"Played hit sound: {randomClip.name}");
         }
     }
 
@@ -65,39 +91,44 @@ public class NPCHealth : MonoBehaviour
     }
 
     private void SpawnBloodSplash()
-{
-    if (bloodSplashPrefab != null)
     {
-        // Instantiate the blood splash
-        GameObject bloodSplash = Instantiate(bloodSplashPrefab, transform.position, Quaternion.identity);
-        Debug.Log("Blood splash prefab instantiated.");
-
-        // Trigger particle system
-        ParticleSystem ps = bloodSplash.GetComponent<ParticleSystem>();
-        if (ps != null)
+        if (bloodSplashPrefab != null)
         {
-            ps.Play();
-            Debug.Log("Blood splash particle system started.");
+            // Instantiate the blood splash
+            GameObject bloodSplash = Instantiate(bloodSplashPrefab, transform.position, Quaternion.identity);
+            Debug.Log("Blood splash prefab instantiated.");
+
+            // Trigger particle system
+            ParticleSystem ps = bloodSplash.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Play();
+                Debug.Log("Blood splash particle system started.");
+            }
+            else
+            {
+                Debug.LogWarning("No ParticleSystem found on BloodSplash prefab!");
+            }
+
+            // Destroy the blood splash
+            Destroy(bloodSplash, 1f);
         }
         else
         {
-            Debug.LogWarning("No ParticleSystem found on BloodSplash prefab!");
+            Debug.LogWarning("BloodSplash prefab not assigned!");
         }
-
-        // Destroy the blood splash
-        Destroy(bloodSplash, 1f);
     }
-    else
-    {
-        Debug.LogWarning("BloodSplash prefab not assigned!");
-    }
-}
-
 
     private void Die()
     {
         // Handle NPC death logic
         Debug.Log($"{gameObject.name} has died!");
+
+        // Play the death sound
+        if (deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+        }
 
         // Notify the MissionManager of the kill
         MissionManager missionManager = Object.FindFirstObjectByType<MissionManager>();
