@@ -99,6 +99,17 @@ public class NPCHealth : MonoBehaviour
         // Handle NPC death logic
         Debug.Log($"{gameObject.name} has died!");
 
+        // Notify the MissionManager of the kill
+        MissionManager missionManager = Object.FindFirstObjectByType<MissionManager>();
+        if (missionManager != null)
+        {
+            missionManager.RegisterKill();
+        }
+        else
+        {
+            Debug.LogWarning("MissionManager not found. Kill not registered.");
+        }
+
         // Spawn the bloodlake at the NPC's position
         if (bloodlakePrefab != null)
         {
