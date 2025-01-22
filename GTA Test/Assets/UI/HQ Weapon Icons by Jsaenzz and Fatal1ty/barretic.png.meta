@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      barretic_0: 1261563932015743363
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

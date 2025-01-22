@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sawnoff icon_0: 4708920998216192567
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

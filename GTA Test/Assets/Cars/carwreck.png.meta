@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      carwreck_0: 4901955507273024058
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

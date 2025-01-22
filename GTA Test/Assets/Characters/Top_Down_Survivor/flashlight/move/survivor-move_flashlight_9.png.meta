@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      survivor-move_flashlight_9_0: -926555313191299180
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      survivor-meleeattack_flashlight_13_0: -2681662903775068834
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

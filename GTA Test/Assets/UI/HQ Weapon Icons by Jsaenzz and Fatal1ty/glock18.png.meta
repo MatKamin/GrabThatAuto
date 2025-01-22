@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      glock18_0: -4318052092996489124
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

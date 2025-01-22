@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      GTA1 London_0: -5580907562343874877
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

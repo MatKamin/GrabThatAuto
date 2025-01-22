@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      survivor-reload_shotgun_19_0: 5104252217136825505
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

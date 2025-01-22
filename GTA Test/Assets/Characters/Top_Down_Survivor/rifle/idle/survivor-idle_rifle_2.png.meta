@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      survivor-idle_rifle_2_0: -7277315283874364924
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

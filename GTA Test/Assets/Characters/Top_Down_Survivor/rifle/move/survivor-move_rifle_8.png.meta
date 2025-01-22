@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      survivor-move_rifle_8_0: -2314622916460310542
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

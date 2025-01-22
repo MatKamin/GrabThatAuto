@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sako trg-42_0: 5085956536541229326
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

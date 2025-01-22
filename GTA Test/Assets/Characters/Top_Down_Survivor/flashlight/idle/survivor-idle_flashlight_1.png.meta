@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      survivor-idle_flashlight_1_0: -8149432480055605091
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

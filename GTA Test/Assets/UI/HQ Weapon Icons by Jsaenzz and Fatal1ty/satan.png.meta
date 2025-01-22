@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      satan_0: -7607215112327381927
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

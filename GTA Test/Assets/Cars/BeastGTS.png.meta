@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      BeastGTS_0: 5349231547273687805
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

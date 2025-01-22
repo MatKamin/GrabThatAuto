@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      survivor-strafe_right_9_0: 8323224300765447430
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

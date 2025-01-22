@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      AUG3 with Eotech_0: 8182964515318073215
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

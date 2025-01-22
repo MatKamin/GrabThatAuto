@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      survivor-meleeattack_shotgun_8_0: -2069788000661250903
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

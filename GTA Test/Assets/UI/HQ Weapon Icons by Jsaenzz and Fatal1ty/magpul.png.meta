@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      magpul_0: 6011796836123518557
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
